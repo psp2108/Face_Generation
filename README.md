@@ -1,2 +1,2 @@
-# Computerized Suspect Face Generation System
+# Computerized Suspect Face Generation App
 
