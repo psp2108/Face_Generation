@@ -9,8 +9,6 @@ with open("config.json", "r") as f:
 def resizeImagesTo128x128():
     picsDirectory = os.path.join(dataset['DatasetRootPath'], dataset['DatasetImages']).replace("/", "\\")
     picsProcessedDirectory = os.path.join(dataset['DatasetRootPath'], dataset['DatasetProcessedImages']).replace("/", "\\")
-    
-    print(picsProcessedDirectory)
 
     if not os.path.exists(picsProcessedDirectory):
         os.makedirs(picsProcessedDirectory)
