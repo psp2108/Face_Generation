@@ -24,7 +24,5 @@
     - Merge CSV
     - Remove Blurred
     - Manual Filtering
-
-2. Data normalization
-3. Train network
-4. Run Model
+2. Train network
+3. Test Run Model
