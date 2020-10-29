@@ -12,10 +12,10 @@ def getGanModel():
 
     discriminator.trainable = False
 
-    generatorNoise, generatorAttributes = generator.input
+    generatorAttributes, generatorNoise = generator.input
     generatorOutput = generator.output
 
-    ganOutput = discriminator([generatorOutput, generatorAttributes])
+    ganOutput = discriminator([generatorAttributes, generatorOutput])
 
     ganModel = keras.models.Model([generatorNoise, generatorAttributes], ganOutput)
 
