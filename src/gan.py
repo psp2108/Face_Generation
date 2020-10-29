@@ -24,3 +24,5 @@ def getGanModel():
     return ganModel
 
 gan = getGanModel()
+gan.summary()
+plot_model(gan, to_file='gan.png', show_shapes=True, show_layer_names=True)
