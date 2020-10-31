@@ -4,11 +4,11 @@ from tqdm import tqdm
 from PIL import Image
 
 with open("config.json", "r") as f:
-    dataset = json.load(f)['DatasetDetails']
+    dataset = json.load(f)['ImageDetails']
 
 def resizeImagesTo128x128():
-    picsDirectory = os.path.join(dataset['DatasetRootPath'], dataset['DatasetImages']).replace("/", "\\")
-    picsProcessedDirectory = os.path.join(dataset['DatasetRootPath'], dataset['DatasetProcessedImages']).replace("/", "\\")
+    picsDirectory = os.path.join(dataset['ImageRootPath'], dataset['ImageImages']).replace("/", "\\")
+    picsProcessedDirectory = os.path.join(dataset['ImageRootPath'], dataset['ImageProcessedImages']).replace("/", "\\")
 
     if not os.path.exists(picsProcessedDirectory):
         os.makedirs(picsProcessedDirectory)
