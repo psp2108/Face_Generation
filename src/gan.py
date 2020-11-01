@@ -21,8 +21,8 @@ def getGanModel():
 
     opt = keras.optimizers.Adam(lr=0.0002, beta_1=0.5)
     ganModel.compile(loss='binary_crossentropy', optimizer=opt)
-    return ganModel
+    return ganModel, generator, discriminator
 
-gan = getGanModel()
+gan, generator, discriminator = getGanModel()
 gan.summary()
 plot_model(gan, to_file='gan.png', show_shapes=True, show_layer_names=True)
