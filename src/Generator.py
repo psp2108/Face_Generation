@@ -5,7 +5,7 @@ from tensorflow.keras import layers
 from tensorflow.keras.utils import plot_model
 
 def getGeneratorModel():
-    numberOfFeatures = 50
+    numberOfFeatures = 40
     attributesInput = layers.Input(shape=(numberOfFeatures,))
     attributes = layers.Dense(4 * 4 * numberOfFeatures)(attributesInput)
     attributes = layers.Reshape([4, 4, numberOfFeatures])(attributes)

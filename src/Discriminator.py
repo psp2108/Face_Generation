@@ -5,7 +5,7 @@ from tensorflow.keras import layers
 from tensorflow.keras.utils import plot_model
 
 def getDiscriminatorModel():
-    numberOfFeatures = 50
+    numberOfFeatures = 40
     attributesInput = layers.Input(shape=(numberOfFeatures,))
     attributes = layers.Dense(128 * 128 * numberOfFeatures)(attributesInput)
     attributes = layers.Reshape([128, 128, numberOfFeatures])(attributes)
@@ -40,9 +40,6 @@ def getDiscriminatorModel():
     discriminator = layers.Dense(1, activation='sigmoid')(discriminator)
 
     discriminatorModel = keras.models.Model([attributesInput, imageInput], discriminator)
-
-    opt = keras.optimizers.Adam(lr=0.0002, beta_1=0.5)
-    discriminatorModel.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
 
     return discriminatorModel
 
