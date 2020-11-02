@@ -7,7 +7,10 @@ from tqdm import tqdm
 from PIL import Image
 
 with open("config.json", "r") as f:
-    dataset = json.load(f)['ImageDetails']
+    jsonFile = json.load(f)
+    CSVDetails = jsonFile['CSVDetails']
+    dataset = jsonFile['ImageDetails']
+    
 
 def resizeImagesTo128x128():
     picsDirectory = os.path.join(dataset['ImageRootPath'], dataset['ImageImages']).replace("/", "\\")
@@ -33,23 +36,17 @@ def resizeImagesTo128x128():
 
 # 1. Combine Excels to single CSV
 def combineExcels(): # Mandatory
-    os.chdir("E:/sem 6/project/datasets/")
+    CSVRootPath = CSVDetails['CSVRootPath']
+    CSVList = CSVDetails['CSVList']
+    CombinedCSV = CSVDetails['CombinedCSV']
+    df = pd.read_csv(os.path.join(CSVRootPath, CSVList[0]).replace("/", "\\"))
+    for i in range(1,len(CSVList)):
+        CSVFile = pd.read_csv(os.path.join(CSVRootPath, CSVList[i]).replace("/", "\\"))
+        df = df.merge(CSVFile, how = 'outer', on = 'image_id')
+    df.to_csv(os.path.join(CSVRootPath, CombinedCSV).replace("/", "\\"), index = False)
 
-    path1 = "E:/sem 6/project/datasets/list_attr_celeba.csv"
-    path2 = "E:/sem 6/project/datasets/list_bbox_celeba.csv"
-    path3 = "E:/sem 6/project/datasets/list_landmarks_align_celeba.csv"
 
-    df1 = pd.read_csv(path1)
-    df2 = pd.read_csv(path2)
-    df3 = pd.read_csv(path3)
 
-    df = df1.merge(df2, how = 'outer', on = 'image_id')
-    df.to_csv("test1.csv", index = False)
-
-    path4 = "E:/sem 6/project/datasets/test1.csv"
-    df4 = pd.read_csv(path4)
-    df = df4.merge(df3, how = 'outer', on = 'image_id')
-    df.to_csv("test2.csv", index = False)
 
 # 2. Remove blurred images
 def deleteBlurredImages():
