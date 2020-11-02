@@ -1,18 +1,55 @@
 import pandas as pd
 import shutil
+import os
+import json
+import glob
+from tqdm import tqdm
+from PIL import Image
+
+with open("config.json", "r") as f:
+    dataset = json.load(f)['DatasetDetails']
+
+def resizeImagesTo128x128():
+    picsDirectory = os.path.join(dataset['DatasetRootPath'], dataset['DatasetImages']).replace("/", "\\")
+    picsProcessedDirectory = os.path.join(dataset['DatasetRootPath'], dataset['DatasetProcessedImages']).replace("/", "\\")
+
+    if not os.path.exists(picsProcessedDirectory):
+        os.makedirs(picsProcessedDirectory)
+
+        originalWidth = 178
+        originalHeight = 218
+        difference = (originalHeight - originalWidth) // 2
+
+        newWidth = 128
+        newHeight = 128
+
+        cropRect = (0, difference, originalWidth, originalHeight - difference)
+
+        for eachImage in tqdm(os.listdir(picsDirectory)):
+            image = Image.open(os.path.join(picsDirectory, eachImage)).crop(cropRect)
+            image.thumbnail((newWidth, newHeight), Image.ANTIALIAS)
+            image.save(os.path.join(picsProcessedDirectory, eachImage))
+
 
 # 1. Combine Excels to single CSV
 def combineExcels(): # Mandatory
-    shutil.copy(r'E:\\sem 6\\project\\datasets\\list_attr_celeba.csv', r'E:\\sem 6\\project\\datasets\\merged.csv')
-    data = pd.read_csv (r'E:\\sem 6\\project\\datasets\\merged.csv')
+    os.chdir("E:/sem 6/project/datasets/")
 
-    # https://www.datacamp.com/community/tutorials/pandas-to-csv?utm_source=adwords_ppc&utm_campaignid=1455363063&utm_adgroupid=65083631748&utm_device=c&utm_keyword=&utm_matchtype=b&utm_network=g&utm_adpostion=&utm_creative=332602034358&utm_targetid=dsa-429603003980&utm_loc_interest_ms=&utm_loc_physical_ms=9300430
+    path1 = "E:/sem 6/project/datasets/list_attr_celeba.csv"
+    path2 = "E:/sem 6/project/datasets/list_bbox_celeba.csv"
+    path3 = "E:/sem 6/project/datasets/list_landmarks_align_celeba.csv"
 
-    # read_file.to_csv (r'Path to store the CSV file\File name.csv', index = None, header=True)
-    # print(type(data))
-    # print(data['image_id'])
-    # print(data.head(2)) # Number of rows to select
-    print(data.columns)
+    df1 = pd.read_csv(path1)
+    df2 = pd.read_csv(path2)
+    df3 = pd.read_csv(path3)
+
+    df = df1.merge(df2, how = 'outer', on = 'image_id')
+    df.to_csv("test1.csv", index = False)
+
+    path4 = "E:/sem 6/project/datasets/test1.csv"
+    df4 = pd.read_csv(path4)
+    df = df4.merge(df3, how = 'outer', on = 'image_id')
+    df.to_csv("test2.csv", index = False)
 
 # 2. Remove blurred images
 def deleteBlurredImages():
@@ -22,6 +59,8 @@ def deleteBlurredImages():
 def selectiveDelete():
     pass
 
+
+resizeImagesTo128x128()
 combineExcels()
 # deleteBlurredImages()
 selectiveDelete()
