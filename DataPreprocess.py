@@ -1,8 +1,6 @@
 import pandas as pd
-import shutil
 import os
 import json
-import glob
 from tqdm import tqdm
 from PIL import Image
 
@@ -39,6 +37,8 @@ def combineExcels(): # Mandatory
     CSVRootPath = CSVDetails['CSVRootPath']
     CSVList = CSVDetails['CSVList']
     CombinedCSV = CSVDetails['CombinedCSV']
+    if len(CSVList) == 1:
+        return
     df = pd.read_csv(os.path.join(CSVRootPath, CSVList[0]).replace("/", "\\"))
     for i in range(1,len(CSVList)):
         CSVFile = pd.read_csv(os.path.join(CSVRootPath, CSVList[i]).replace("/", "\\"))
