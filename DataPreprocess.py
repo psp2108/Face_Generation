@@ -37,7 +37,7 @@ def combineExcels(): # Mandatory
     CSVRootPath = CSVDetails['CSVRootPath']
     CSVList = CSVDetails['CSVList']
     CombinedCSV = CSVDetails['CombinedCSV']
-    if len(CSVList) == 1:
+    if len(CSVList) == 0:
         return
     df = pd.read_csv(os.path.join(CSVRootPath, CSVList[0]).replace("/", "\\"))
     for i in range(1,len(CSVList)):
