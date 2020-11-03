@@ -1,8 +1,17 @@
 {
-    "DatasetDetails" : {
-        "DatasetRootPath" : "datasets/29561_37705_bundle_archive/img_align_celeba",
-        "DatasetImages" : "img_align_celeba",
-        "DatasetProcessedImages" : "processed",
-        "DatasetAttributes" : ""
+    "ImageDetails" : {
+        "ImageRootPath" : "datasets/29561_37705_bundle_archive/img_align_celeba",
+        "ImageImages" : "img_align_celeba",
+        "ImageProcessedImages" : "processed"
+    },
+    "CSVDetails" : {
+        "CSVRootPath" : "datasets/29561_37705_bundle_archive",
+        "CSVList" : [
+            "list_attr_celeba.csv",
+            "list_bbox_celeba.csv",
+            "list_eval_partition.csv",
+            "list_landmarks_align_celeba.csv"
+        ],
+        "CombinedCSV" : "combined.csv"
     }
 }
