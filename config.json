@@ -5,7 +5,7 @@
         "ImageProcessedImages" : "processed"
     },
     "CSVDetails" : {
-        "CSVRootPath" : "Z:/Programs/Final Year Project/29561_37705_bundle_archive",
+        "CSVRootPath" : "datasets/29561_37705_bundle_archive",
         "CSVList" : [
             "list_attr_celeba.csv",
             "list_bbox_celeba.csv",

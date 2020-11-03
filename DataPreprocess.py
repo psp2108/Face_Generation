@@ -9,8 +9,9 @@ with open("config.json", "r") as f:
     CSVDetails = jsonFile['CSVDetails']
     dataset = jsonFile['ImageDetails']
     
-
+# 1. Change the resolution of images
 def resizeImagesTo128x128():
+    print("Resizing Images ...")
     picsDirectory = os.path.join(dataset['ImageRootPath'], dataset['ImageImages']).replace("/", "\\")
     picsProcessedDirectory = os.path.join(dataset['ImageRootPath'], dataset['ImageProcessedImages']).replace("/", "\\")
 
@@ -30,34 +31,45 @@ def resizeImagesTo128x128():
             image = Image.open(os.path.join(picsDirectory, eachImage)).crop(cropRect)
             image.thumbnail((newWidth, newHeight), Image.ANTIALIAS)
             image.save(os.path.join(picsProcessedDirectory, eachImage))
+        
+        print("Resized Images")
+    else:
+        print("Output folder '"+ picsProcessedDirectory +"' aready exists. Images are either already resized or delete the folder.")
+    print("-" * 100)
 
-
-# 1. Combine Excels to single CSV
-def combineExcels(): # Mandatory
+# 2. Combine Excels to single CSV
+def combineExcels(): 
+    print("Combining CSV files Images ...")
     CSVRootPath = CSVDetails['CSVRootPath']
     CSVList = CSVDetails['CSVList']
     CombinedCSV = CSVDetails['CombinedCSV']
     if len(CSVList) == 0:
+        print("No files selected to combine")
         return
     df = pd.read_csv(os.path.join(CSVRootPath, CSVList[0]).replace("/", "\\"))
+    print("Reading file '"+ CSVList[0] +"'")
     for i in range(1,len(CSVList)):
+        print("Reading file '"+ CSVList[i] +"'")
         CSVFile = pd.read_csv(os.path.join(CSVRootPath, CSVList[i]).replace("/", "\\"))
         df = df.merge(CSVFile, how = 'outer', on = 'image_id')
     df.to_csv(os.path.join(CSVRootPath, CombinedCSV).replace("/", "\\"), index = False)
 
+    print("Files combined")
+    print("-" * 100)
 
 
 
-# 2. Remove blurred images
+
+# 3. Remove blurred images
 def deleteBlurredImages():
     pass
 
-# 3. Manual Filtering 
+# 4. Manual Filtering 
 def selectiveDelete():
     pass
 
 
 resizeImagesTo128x128()
 combineExcels()
-# deleteBlurredImages()
+deleteBlurredImages()
 selectiveDelete()
