@@ -1,4 +1,8 @@
 datasets
 notebook.bat
 face_GAN.ipynb
+myop*
+res2
+models
+
 **/__pycache__
