@@ -23,7 +23,7 @@ from tqdm import tqdm
 
 
 def plotSaveImage(image, savePath = ''):
-    data = (gImage.numpy() * 255)[0]
+    data = (image.numpy() * 255)[0]
     plt.imshow(data)
     plt.show()
     if len(savePath):
