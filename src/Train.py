@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 from matplotlib import pyplot as plt
 import tensorflow as tf 
 from tensorflow import keras
@@ -11,16 +5,12 @@ from tensorflow.keras import layers
 from tensorflow.keras.utils import plot_model
 from PIL import Image
 import numpy as np
-from src.gan import getGanModel
+from gan import getGanModel
 
 import cv2
 import pandas as pd
 import os
 from tqdm import tqdm
-
-
-# In[2]:
-
 
 def plotSaveImage(image, savePath = ''):
     data = (image.numpy() * 255)[0]
@@ -31,22 +21,15 @@ def plotSaveImage(image, savePath = ''):
         im = Image.fromarray(rescaled)
         im.save(savePath)
 
-
-# In[3]:
-
-
 def getImages(rootPath, imageList):
     images = []
     for i in imageList:
         temp = cv2.imread(rootPath + i)
+        # https://www.pyimagesearch.com/2014/11/03/display-matplotlib-rgb-image/
         temp = cv2.cvtColor(temp, cv2.COLOR_BGR2RGB)
         temp = temp / 255
         images.append(temp)
     return np.array(images)
-
-
-# In[4]:
-
 
 def getMetaData(rawData, start, batchSize, rootPath = ''):
     picNames = rawData[start:start+batchSize, 0]
@@ -59,15 +42,7 @@ def getMetaData(rawData, start, batchSize, rootPath = ''):
         return (images, attributes)
     return (picNames, attributes)
 
-
-# In[5]:
-
-
 gan, generator, discriminator = getGanModel()
-
-
-# In[11]:
-
 
 # Test Generator image
 features = tf.random.normal(shape=[1, 40])
@@ -75,25 +50,13 @@ randomNoise = tf.random.normal(shape=[1, 100])
 gImage = generator([features, randomNoise], training=False)
 plotSaveImage(gImage)
 
-
-# In[13]:
-
-
 decision = discriminator([features, gImage])
 print(decision)
-
-
-# In[14]:
-
 
 picsPath = 'P:/GAN Learning/Face_Generation/datasets/29561_37705_bundle_archive/img_align_celeba/processed/'
 csvPath = 'P:/GAN Learning/Face_Generation/datasets/29561_37705_bundle_archive/list_attr_celeba.csv'
 data = pd.read_csv(csvPath)
 numpyData = data.values
-
-
-# In[24]:
-
 
 batchSize = 25
 start = 0
@@ -153,12 +116,6 @@ for step in tqdm(range(iterations)):
         im = Image.fromarray(np.uint8(control_image * 255))
         im.save("myop/%d.png" % (step))
 
-        
-
-
-# In[16]:
-
-
 tempGeneratedImages = generatedImages * 255
 
 plt.figure(1, figsize=(10, 10))
@@ -167,10 +124,3 @@ for i in range(batchSize):
     plt.imshow(tempGeneratedImages[i])
     plt.axis('off')
 plt.show()
-
-
-# In[ ]:
-
-
-
-
