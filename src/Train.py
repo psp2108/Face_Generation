@@ -55,13 +55,29 @@ print(decision)
 
 picsPath = 'P:/GAN Learning/Face_Generation/datasets/29561_37705_bundle_archive/img_align_celeba/processed/'
 csvPath = 'P:/GAN Learning/Face_Generation/datasets/29561_37705_bundle_archive/list_attr_celeba.csv'
+modelLog = 'P:/GAN Learning/Face_Generation/src/Model Log.csv'
+
+modelLogFile = open(modelLog, "w")
+modelLogFile.writelines("Iterations, Discriminator Loss, Adversary Loss, Image number, Loop\n")
+modelLogFile.close()
+
 data = pd.read_csv(csvPath)
 numpyData = data.values
 
-batchSize = 25
+batchSize = 16
 start = 0
 iterations = 50000
+loop = 0
+# stepLimit = len(numpyData) - batchSize
+stepLimit = 30000
 randomNoiseLength = 100
+
+saveModelInterval = 250
+showImageInterval = 10
+
+controlSizeOfSampleImages = 6
+_, sampleImagesAttributes = getMetaData(numpyData, 0, controlSizeOfSampleImages**2)
+sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
 
 discriminatorLosses = []
 adversaryLosses = []
@@ -97,24 +113,34 @@ for step in tqdm(range(iterations)):
     # Training Generator
     adversaryLoss = gan.train_on_batch([randomVector, attributes], misleadingTargets)
     adversaryLosses.append(adversaryLoss)
-    
-    start += batchSize
-    if start > len(numpyData) - batchSize:
-        start = 0
-    
-    if step % 50 == 49:
-        gan.save_weights('models/gan'+ str(step) +'.h5')
-        generator.save_weights('models/generator'+ str(step) +'.h5')
-        discriminator.save_weights('models/discriminator'+ str(step) +'.h5')
+        
+    if step % saveModelInterval == saveModelInterval - 1:
+        gan.save_weights('models/gan'+ str(step + 1) +'.h5')
+        generator.save_weights('models/generator'+ str(step + 1) +'.h5')
+        discriminator.save_weights('models/discriminator'+ str(step + 1) +'.h5')
 
-        print('Iterations: %d/%d, d_loss: %.4f,  a_loss: %.4f. ' % (step + 1, iterations, discriminatorLoss, adversaryLoss))
-        control_image = np.ones((128 * 5, 128 * 5, 3))
-        for i in range(25):
-            x_off = i % 5
-            y_off = i // 5
-            control_image[x_off * 128:(x_off + 1) * 128, y_off * 128:(y_off + 1) * 128, :] = generatedImages[i, :, :, :]
+    if step % showImageInterval == showImageInterval - 1:
+        log = 'Iterations: %d/%d, d_loss: %.4f,  a_loss: %.4f. ' % (step + 1, iterations, discriminatorLoss, adversaryLoss)
+        print(log)
+
+        modelLogFile = open(modelLog, "a")
+        modelLogFile.writelines("%d, %f, %f, %d, %d\n" % (step + 1, discriminatorLoss, adversaryLoss, start, loop))
+        modelLogFile.close()
+
+        sampleGeneratedImages = generator.predict([sampleImagesAttributes, sampleRandomNoise])
+        control_image = np.ones((128 * controlSizeOfSampleImages, 128 * controlSizeOfSampleImages, 3))
+        for i in range(controlSizeOfSampleImages**2):
+            x_off = i % controlSizeOfSampleImages
+            y_off = i // controlSizeOfSampleImages
+            control_image[x_off * 128:(x_off + 1) * 128, y_off * 128:(y_off + 1) * 128, :] = sampleGeneratedImages[i, :, :, :]
         im = Image.fromarray(np.uint8(control_image * 255))
-        im.save("myop/%d.png" % (step))
+        im.save("myop/%d.png" % (step + 1))
+        im.save("myop/latest.tif")
+
+    start += batchSize
+    if start > stepLimit:
+        loop += 1
+        start = 0
 
 tempGeneratedImages = generatedImages * 255
 

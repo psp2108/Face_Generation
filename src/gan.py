@@ -3,8 +3,8 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.utils import plot_model
-from src.Discriminator import getDiscriminatorModel
-from src.Generator import getGeneratorModel
+from Discriminator import getDiscriminatorModel
+from Generator import getGeneratorModel
 
 def getGanModel():
     generator = getGeneratorModel()
