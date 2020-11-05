@@ -45,8 +45,9 @@ def getMetaData(rawData, start, batchSize, rootPath = ''):
 gan, generator, discriminator = getGanModel()
 
 # Test Generator image
+randomNoiseLength = 100
 features = tf.random.normal(shape=[1, 40])
-randomNoise = tf.random.normal(shape=[1, 100])
+randomNoise = tf.random.normal(shape=[1, randomNoiseLength])
 gImage = generator([features, randomNoise], training=False)
 plotSaveImage(gImage)
 
@@ -70,7 +71,6 @@ iterations = 50000
 loop = 0
 # stepLimit = len(numpyData) - batchSize
 stepLimit = 30000
-randomNoiseLength = 100
 
 saveModelInterval = 250
 showImageInterval = 10
