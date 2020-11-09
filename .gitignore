@@ -1,10 +1,4 @@
 datasets
-notebook.bat
-face_GAN.ipynb
-myop*
-res2
-models
+**/debug.log
 **/__pycache__
 **/.ipynb_checkpoints
-**/v*
-**/debug.log
