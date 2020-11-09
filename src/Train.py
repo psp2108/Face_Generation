@@ -144,13 +144,13 @@ for step in tqdm(range(iterationsFrom, iterations)):
         generator.save(os.path.join(modelCopy, 'generator_latest.h5'))
         discriminator.save(os.path.join(modelCopy, 'discriminator_latest.h5'))
 
-    if step % showImageInterval == showImageInterval - 1:
-        log = 'Iterations: %d/%d, d_loss: %.4f,  a_loss: %.4f. ' % (step + 1, iterations, discriminatorLoss, adversaryLoss)
-        print(log)
-
         modelLogFile = open(modelLog, "a")
         modelLogFile.writelines("%d, %f, %f, %d, %d\n" % (step + 1, discriminatorLoss, adversaryLoss, start, loop))
         modelLogFile.close()
+
+    if step % showImageInterval == showImageInterval - 1:
+        log = 'Iterations: %d/%d, d_loss: %.4f,  a_loss: %.4f. ' % (step + 1, iterations, discriminatorLoss, adversaryLoss)
+        print(log)
 
         sampleGeneratedImages = generator.predict([sampleImagesAttributes, sampleRandomNoise])
         control_image = np.ones((128 * controlSizeOfSampleImages, 128 * controlSizeOfSampleImages, 3))
