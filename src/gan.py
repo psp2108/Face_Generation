@@ -1,7 +1,4 @@
-from matplotlib import pyplot as plt
-import tensorflow as tf 
 from tensorflow import keras
-from tensorflow.keras import layers
 from tensorflow.keras.utils import plot_model
 from Discriminator import getDiscriminatorModel
 from Generator import getGeneratorModel
@@ -14,7 +11,6 @@ def getGanModel():
     discriminator = getDiscriminatorModel()
 
     opt = keras.optimizers.Adam(lr=0.0002, beta_1=0.5)
-    # discriminatorModel.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
     discriminator.compile(loss='binary_crossentropy', optimizer="rmsprop")
     discriminator.trainable = False
 
@@ -55,5 +51,3 @@ elif len(sys.argv) == 2:
         print("Invalid command, type '-save-diagram' to save the model diagrams")
 else:
     print("Extra parameters supplied")
-
-# main()

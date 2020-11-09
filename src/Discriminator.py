@@ -1,8 +1,5 @@
-from matplotlib import pyplot as plt
-import tensorflow as tf 
 from tensorflow import keras
 from tensorflow.keras import layers
-from tensorflow.keras.utils import plot_model
 import json
 
 with open("config.json", "r") as f:
@@ -19,15 +16,10 @@ def getDiscriminatorModel():
     imageInput = layers.Input(shape=imageShape)
 
     merged = layers.Concatenate()([imageInput, attributes])
-    # 128x128 => 64x64
     # 128x128 => 32x32
     discriminator = layers.Conv2D(64, (5,5), (4,4), padding='same')(merged)
     discriminator = layers.LeakyReLU(0.2)(discriminator)
     discriminator = keras.layers.Dropout(0.3)(discriminator)
-    # # 64x64 => 32x32
-    # discriminator = layers.Conv2D(64, (5,5), (2,2), padding='same')(discriminator)
-    # discriminator = layers.LeakyReLU(0.2)(discriminator)
-    # discriminator = keras.layers.Dropout(0.3)(discriminator)
     # 32x32 => 16x16
     discriminator = layers.Conv2D(64, (5,5), (2,2), padding='same')(discriminator)
     discriminator = layers.LeakyReLU(0.2)(discriminator)

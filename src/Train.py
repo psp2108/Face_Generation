@@ -1,12 +1,9 @@
 from matplotlib import pyplot as plt
 import tensorflow as tf 
 from tensorflow import keras
-from tensorflow.keras import layers
-from tensorflow.keras.utils import plot_model
 from PIL import Image
 import numpy as np
 from gan import getGanModel
-
 import cv2
 import pandas as pd
 import os
