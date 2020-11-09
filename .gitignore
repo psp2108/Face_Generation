@@ -1,2 +1,4 @@
 datasets
-config.json
+**/debug.log
+**/__pycache__
+**/.ipynb_checkpoints

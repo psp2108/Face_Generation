@@ -39,7 +39,7 @@ def resizeImagesTo128x128():
 
 # 2. Combine Excels to single CSV
 def combineExcels(): 
-    print("Combining CSV files Images ...")
+    print("Combining CSV files ...")
     CSVRootPath = CSVDetails['CSVRootPath']
     CSVList = CSVDetails['CSVList']
     CombinedCSV = CSVDetails['CombinedCSV']
