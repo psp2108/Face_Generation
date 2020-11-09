@@ -3,9 +3,14 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.utils import plot_model
+import json
+
+with open("config.json", "r") as f:
+    jsonFile = json.load(f)
+    modelDetails = jsonFile['ModelDetails']
 
 def getDiscriminatorModel():
-    numberOfFeatures = 40
+    numberOfFeatures = modelDetails['TotalAttributes']
     attributesInput = layers.Input(shape=(numberOfFeatures,))
     attributes = layers.Dense(128 * 128 * numberOfFeatures)(attributesInput)
     attributes = layers.Reshape([128, 128, numberOfFeatures])(attributes)

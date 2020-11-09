@@ -10,12 +10,12 @@ from gan import getGanModel
 import cv2
 import pandas as pd
 import os
+import json
 from tqdm import tqdm
-
-gan, generator, discriminator = getGanModel()
 
 def plotSaveImage(image, savePath = ''):
     data = (image.numpy() * 255)[0]
+    data = data.astype('uint8')
     plt.imshow(data, cmap=plt.cm.viridis)
     plt.show()
     if len(savePath):
@@ -23,17 +23,19 @@ def plotSaveImage(image, savePath = ''):
         im = Image.fromarray(rescaled)
         im.save(savePath)
 
-generator.load_weights("P:\\GAN Learning\\Face_Generation\\models\\generator12449.h5")
+with open("config.json", "r") as f:
+    jsonFile = json.load(f)
+    modelDetails = jsonFile['ModelDetails']
+modelPath = os.path.join(modelDetails['TrainedModel'], 'generator_latest.h5')
+
+generator = keras.models.load_model(modelPath)
 
 # Test Generator image
-
-features = np.array([[-1,1,1,-1,-1,-1,1,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,1,-1,1,-1,-1,1,-1,-1,1,-1,-1,-1,1,-1,1,1,-1,1,1,-1,1]])
+features = np.array([modelDetails['Testing']['Attributes']])
 features = np.asarray(features).astype('float32')
 features += 0.05 * np.random.random(features.shape)
 
-# features = tf.random.normal(shape=[1, 40])
-randomNoise = tf.random.normal(shape=[1, 100])
-# gImage = generator([np.array([features,features,features]), np.array([randomNoise,randomNoise,randomNoise])], training=False)
+randomNoise = tf.random.normal(shape=[1, modelDetails['RandomVectorSize']])
 gImage = generator([features, randomNoise], training=False)
 print(gImage.shape)
-plotSaveImage(gImage, "P:\\GAN Learning\\Face_Generation\\models\\generator10249-sample.png")
+plotSaveImage(gImage, os.path.join(modelDetails['Testing']['OutputFolder'], modelDetails['Testing']['OutputImage']))

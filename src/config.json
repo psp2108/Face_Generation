@@ -1,17 +1,27 @@
 {
     "ImageDetails" : {
-        "ImageRootPath" : "datasets/29561_37705_bundle_archive/img_align_celeba",
+        "ImageRootPath" : "../datasets/29561_37705_bundle_archive/img_align_celeba",
         "ImageImages" : "img_align_celeba",
         "ImageProcessedImages" : "processed"
     },
     "CSVDetails" : {
-        "CSVRootPath" : "datasets/29561_37705_bundle_archive",
+        "CSVRootPath" : "../datasets/29561_37705_bundle_archive",
         "CSVList" : [
-            "list_attr_celeba.csv",
-            "list_bbox_celeba.csv",
-            "list_eval_partition.csv",
-            "list_landmarks_align_celeba.csv"
+            "list_attr_celeba.csv"
         ],
         "CombinedCSV" : "combined.csv"
+    },
+    "ModelDetails" : {
+        "ModelLog" : "Model Log.csv",
+        "TrainedModel" : "Trained models",
+        "SampleOutputs" : "Sample Outputs",
+        "ModelDiagrams" : "Model diagrams",
+        "RandomVectorSize" : 100,
+        "TotalAttributes" : 40,
+        "Testing" : {
+            "Attributes" : [-1,-1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,-1,-1,1,1,1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,-1,-1,-1,-1,-1,1,-1],
+            "OutputImage" : "test.png",
+            "OutputFolder" : ""
+        }
     }
 }

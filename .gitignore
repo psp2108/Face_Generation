@@ -5,4 +5,6 @@ myop*
 res2
 models
 **/__pycache__
-config.json
+**/.ipynb_checkpoints
+**/v*
+**/debug.log

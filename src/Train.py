@@ -11,6 +11,7 @@ import cv2
 import pandas as pd
 import os
 from tqdm import tqdm
+import json
 
 def plotSaveImage(image, savePath = ''):
     data = (image.numpy() * 255)[0]
@@ -24,8 +25,7 @@ def plotSaveImage(image, savePath = ''):
 def getImages(rootPath, imageList):
     images = []
     for i in imageList:
-        temp = cv2.imread(rootPath + i)
-        # https://www.pyimagesearch.com/2014/11/03/display-matplotlib-rgb-image/
+        temp = cv2.imread(os.path.join(rootPath, i))
         temp = cv2.cvtColor(temp, cv2.COLOR_BGR2RGB)
         temp = temp / 255
         images.append(temp)
@@ -42,10 +42,60 @@ def getMetaData(rawData, start, batchSize, rootPath = ''):
         return (images, attributes)
     return (picNames, attributes)
 
-gan, generator, discriminator = getGanModel()
+with open("config.json", "r") as f:
+    jsonFile = json.load(f)
+    CSVDetails = jsonFile['CSVDetails']
+    dataset = jsonFile['ImageDetails']
+    modelDetails = jsonFile['ModelDetails']
+
+picsPath = os.path.join(dataset['ImageRootPath'], dataset['ImageProcessedImages']).replace("/", "\\")
+csvPath = os.path.join(CSVDetails['CSVRootPath'], CSVDetails['CombinedCSV']).replace("/", "\\")
+modelLog = modelDetails['ModelLog'].replace("/", "\\")
+modelCopy = modelDetails['TrainedModel'].replace("/", "\\")
+sampleOutput = modelDetails['SampleOutputs'].replace("/", "\\")
+
+data = pd.read_csv(csvPath)
+numpyData = data.values
+
+randomNoiseLength = modelDetails['RandomVectorSize']
+batchSize = 16
+start = 0
+iterationsFrom = 0
+iterations = 50000
+loop = 0
+stepLimit = len(numpyData) - batchSize
+# stepLimit = 10000
+
+saveModelInterval = 10
+showImageInterval = 2
+
+controlSizeOfSampleImages = 6
+
+if os.path.isdir(modelCopy):
+    # Problem in loading (But saving in perfect, problem occurs which continuining to train the model again)
+    gan = keras.models.load_model(os.path.join(modelCopy, 'gan_latest.h5'))
+    generator = keras.models.load_model(os.path.join(modelCopy, 'generator_latest.h5'))
+    discriminator = keras.models.load_model(os.path.join(modelCopy, 'discriminator_latest.h5'))
+
+    with open(modelLog, 'r') as f:
+        lastLine = f.read().splitlines()[-1]
+    
+    # Iterations, Discriminator Loss, Adversary Loss, Image number, Loop
+    lastLine = lastLine.split(",")
+    loop = int(lastLine[4])
+    iterationsFrom = int(lastLine[0])
+    start = int(lastLine[3]) # + batch size
+    iterations = iterations - int(lastLine[0]) # optional
+else:
+    os.makedirs(modelCopy)
+    os.makedirs(sampleOutput)
+    gan, generator, discriminator = getGanModel()
+
+    modelLogFile = open(modelLog, "w")
+    modelLogFile.writelines("Iterations, Discriminator Loss, Adversary Loss, Image number, Loop\n")
+    modelLogFile.close()
 
 # Test Generator image
-randomNoiseLength = 100
 features = tf.random.normal(shape=[1, 40])
 randomNoise = tf.random.normal(shape=[1, randomNoiseLength])
 gImage = generator([features, randomNoise], training=False)
@@ -54,35 +104,10 @@ plotSaveImage(gImage)
 decision = discriminator([features, gImage])
 print(decision)
 
-picsPath = 'P:/GAN Learning/Face_Generation/datasets/29561_37705_bundle_archive/img_align_celeba/processed/'
-csvPath = 'P:/GAN Learning/Face_Generation/datasets/29561_37705_bundle_archive/list_attr_celeba.csv'
-modelLog = 'P:/GAN Learning/Face_Generation/src/Model Log.csv'
-
-modelLogFile = open(modelLog, "w")
-modelLogFile.writelines("Iterations, Discriminator Loss, Adversary Loss, Image number, Loop\n")
-modelLogFile.close()
-
-data = pd.read_csv(csvPath)
-numpyData = data.values
-
-batchSize = 16
-start = 0
-iterations = 50000
-loop = 0
-# stepLimit = len(numpyData) - batchSize
-stepLimit = 30000
-
-saveModelInterval = 250
-showImageInterval = 10
-
-controlSizeOfSampleImages = 6
 _, sampleImagesAttributes = getMetaData(numpyData, 0, controlSizeOfSampleImages**2)
 sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
 
-discriminatorLosses = []
-adversaryLosses = []
-
-for step in tqdm(range(iterations)):    
+for step in tqdm(range(iterationsFrom, iterations)):    
     # Fetching the images and their attributes from Hard drive
     realImages, attributes = getMetaData(numpyData, start, batchSize, picsPath)
     
@@ -101,7 +126,6 @@ for step in tqdm(range(iterations)):
     
     # Training Discriminator
     discriminatorLoss = discriminator.train_on_batch([combinedAttributes, combinedImages], labels)
-    discriminatorLosses.append(discriminatorLoss)
     
     # Preparing to train Generator
     misleadingTargets = np.ones((batchSize, 1))
@@ -112,12 +136,16 @@ for step in tqdm(range(iterations)):
     
     # Training Generator
     adversaryLoss = gan.train_on_batch([randomVector, attributes], misleadingTargets)
-    adversaryLosses.append(adversaryLoss)
         
     if step % saveModelInterval == saveModelInterval - 1:
-        gan.save_weights('models/gan'+ str(step + 1) +'.h5')
-        generator.save_weights('models/generator'+ str(step + 1) +'.h5')
-        discriminator.save_weights('models/discriminator'+ str(step + 1) +'.h5')
+        gan.save(os.path.join(modelCopy, 'gan_'+ str(step + 1) +'.h5'))
+        generator.save(os.path.join(modelCopy, 'generator_'+ str(step + 1) +'.h5'))
+        discriminator.save(os.path.join(modelCopy, 'discriminator_'+ str(step + 1) +'.h5'))
+
+        # Preserve latest copy for easy access
+        gan.save(os.path.join(modelCopy, 'gan_latest.h5'))
+        generator.save(os.path.join(modelCopy, 'generator_latest.h5'))
+        discriminator.save(os.path.join(modelCopy, 'discriminator_latest.h5'))
 
     if step % showImageInterval == showImageInterval - 1:
         log = 'Iterations: %d/%d, d_loss: %.4f,  a_loss: %.4f. ' % (step + 1, iterations, discriminatorLoss, adversaryLoss)
@@ -134,8 +162,9 @@ for step in tqdm(range(iterations)):
             y_off = i // controlSizeOfSampleImages
             control_image[x_off * 128:(x_off + 1) * 128, y_off * 128:(y_off + 1) * 128, :] = sampleGeneratedImages[i, :, :, :]
         im = Image.fromarray(np.uint8(control_image * 255))
-        im.save("myop/%d.png" % (step + 1))
-        im.save("myop/latest.tif")
+      
+        im.save(os.path.join(sampleOutput, str(step + 1) + ".png"))
+        im.save(os.path.join(sampleOutput, "latest.tif"))
 
     start += batchSize
     if start > stepLimit:

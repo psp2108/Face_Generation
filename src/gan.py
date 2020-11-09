@@ -5,6 +5,9 @@ from tensorflow.keras import layers
 from tensorflow.keras.utils import plot_model
 from Discriminator import getDiscriminatorModel
 from Generator import getGeneratorModel
+import sys
+import json
+import os
 
 def getGanModel():
     generator = getGeneratorModel()
@@ -29,9 +32,28 @@ def getGanModel():
 def main():
     gan, generator, discriminator = getGanModel()
     gan.summary()
-    folder = 'Model Diagrams/'
-    plot_model(gan, to_file=folder+'gan.png', show_shapes=True, show_layer_names=True)
-    plot_model(generator, to_file=folder+'generator.png', show_shapes=True, show_layer_names=True)
-    plot_model(discriminator, to_file=folder+'discriminator.png', show_shapes=True, show_layer_names=True)
+
+    with open("config.json", "r") as f:
+        jsonFile = json.load(f)
+        modelDetails = jsonFile['ModelDetails']
+
+    folder = modelDetails['ModelDiagrams']
+
+    if not os.path.isdir(folder):
+        os.makedirs(folder)
+
+    plot_model(gan, to_file=os.path.join(folder, 'gan.png'), show_shapes=True, show_layer_names=True)
+    plot_model(generator, to_file=os.path.join(folder, 'generator.png'), show_shapes=True, show_layer_names=True)
+    plot_model(discriminator, to_file=os.path.join(folder, 'discriminator.png'), show_shapes=True, show_layer_names=True)
+
+if len(sys.argv) == 1:
+    print("Nothing Happened! execute 'python gan.py -save-diagram' to save the model diagrams")
+elif len(sys.argv) == 2:
+    if sys.argv[1] == '-save-diagram':
+        main()
+    else:
+        print("Invalid command, type '-save-diagram' to save the model diagrams")
+else:
+    print("Extra parameters supplied")
 
 # main()
