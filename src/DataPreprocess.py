@@ -8,6 +8,7 @@ with open("config.json", "r") as f:
     jsonFile = json.load(f)
     CSVDetails = jsonFile['CSVDetails']
     dataset = jsonFile['ImageDetails']
+    DeleteRecords = jsonFile['DeleteRecords']
     
 # 1. Change the resolution of images
 def resizeImagesTo128x128():
@@ -60,16 +61,24 @@ def combineExcels():
 
 
 
-# 3. Remove blurred images
-def deleteBlurredImages():
-    pass
+# 3. Remove Improper Records
+def deleteImproperRecords():
+    CSVRootPath = CSVDetails['CSVRootPath']
+    CombinedCSV = CSVDetails['CombinedCSV']
+    DeleteRecordList = DeleteRecords['RecordList']
+    df = pd.read_csv(os.path.join(CSVRootPath, CombinedCSV).replace("/", "\\"))    
+    for i in DeleteRecordList.keys():
+        df = df[df[i] != DeleteRecordList[i]]
+    df.drop(DeleteRecordList.keys(), axis = 1, inplace = True) 
+    print(df)
+    df.to_csv(os.path.join(CSVRootPath, CombinedCSV).replace("/", "\\"), index = False)
 
 # 4. Manual Filtering 
 def selectiveDelete():
     pass
 
 
-resizeImagesTo128x128()
+#resizeImagesTo128x128()
 combineExcels()
-deleteBlurredImages()
+deleteImproperRecords()
 selectiveDelete()
