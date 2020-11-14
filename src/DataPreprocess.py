@@ -8,7 +8,7 @@ with open("config.json", "r") as f:
     jsonFile = json.load(f)
     CSVDetails = jsonFile['CSVDetails']
     dataset = jsonFile['ImageDetails']
-    DeleteRecords = jsonFile['DeleteRecords']
+    deleteRecords = jsonFile['DeleteRecords']
     
 # 1. Change the resolution of images
 def resizeImagesTo128x128():
@@ -43,42 +43,51 @@ def combineExcels():
     print("Combining CSV files ...")
     CSVRootPath = CSVDetails['CSVRootPath']
     CSVList = CSVDetails['CSVList']
-    CombinedCSV = CSVDetails['CombinedCSV']
+    combinedCSV = CSVDetails['CombinedCSV']
+
     if len(CSVList) == 0:
         print("No files selected to combine")
         return
+
     df = pd.read_csv(os.path.join(CSVRootPath, CSVList[0]).replace("/", "\\"))
     print("Reading file '"+ CSVList[0] +"'")
+
     for i in range(1,len(CSVList)):
         print("Reading file '"+ CSVList[i] +"'")
         CSVFile = pd.read_csv(os.path.join(CSVRootPath, CSVList[i]).replace("/", "\\"))
-        df = df.merge(CSVFile, how = 'outer', on = 'image_id')
-    df.to_csv(os.path.join(CSVRootPath, CombinedCSV).replace("/", "\\"), index = False)
+        df = df.merge(CSVFile, how = 'outer', on = 'image_id').
+
+    df.to_csv(os.path.join(CSVRootPath, combinedCSV).replace("/", "\\"), index = False)
 
     print("Files combined")
     print("-" * 100)
 
-
-
-
 # 3. Remove Improper Records
 def deleteImproperRecords():
+    print("Deleting Improper Records ...")
     CSVRootPath = CSVDetails['CSVRootPath']
-    CombinedCSV = CSVDetails['CombinedCSV']
-    DeleteRecordList = DeleteRecords['RecordList']
-    df = pd.read_csv(os.path.join(CSVRootPath, CombinedCSV).replace("/", "\\"))    
-    for i in DeleteRecordList.keys():
-        df = df[df[i] != DeleteRecordList[i]]
-    df.drop(DeleteRecordList.keys(), axis = 1, inplace = True) 
-    print(df)
-    df.to_csv(os.path.join(CSVRootPath, CombinedCSV).replace("/", "\\"), index = False)
+    combinedCSV = CSVDetails['CombinedCSV']
+    deleteRecordList = deleteRecords['RecordList']
+
+    df = pd.read_csv(os.path.join(CSVRootPath, combinedCSV).replace("/", "\\"))    
+    columnList = deleteRecordList.keys()
+
+    for i in columnList:
+        print("Deleting Records where {}={}".format(i, deleteRecordList[i]))
+        df = df[df[i] != deleteRecordList[i]]
+
+    print("Dropping columns {}".format(columnList))
+    df.drop(columnList, axis = 1, inplace = True) 
+    df.to_csv(os.path.join(CSVRootPath, combinedCSV).replace("/", "\\"), index = False)
+    
+    print("Records Deleted")
+    print("-" * 100)
 
 # 4. Manual Filtering 
 def selectiveDelete():
     pass
 
-
-#resizeImagesTo128x128()
+resizeImagesTo128x128()
 combineExcels()
 deleteImproperRecords()
 selectiveDelete()
