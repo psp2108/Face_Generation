@@ -55,7 +55,7 @@ def combineExcels():
     for i in range(1,len(CSVList)):
         print("Reading file '"+ CSVList[i] +"'")
         CSVFile = pd.read_csv(os.path.join(CSVRootPath, CSVList[i]).replace("/", "\\"))
-        df = df.merge(CSVFile, how = 'outer', on = 'image_id').
+        df = df.merge(CSVFile, how = 'outer', on = 'image_id')
 
     df.to_csv(os.path.join(CSVRootPath, combinedCSV).replace("/", "\\"), index = False)
 
