@@ -3,10 +3,3 @@ datasets
 **/__pycache__
 **/.vscode
 **/.ipynb_checkpoints
-
-notebook.bat
-face_GAN.ipynb
-res2
-myop*
-models
-**/v*
