@@ -1,6 +1,7 @@
 datasets
 **/debug.log
 **/__pycache__
+**/.vscode
 **/.ipynb_checkpoints
 
 notebook.bat

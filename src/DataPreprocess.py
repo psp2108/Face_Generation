@@ -37,11 +37,27 @@ def resizeImagesTo128x128():
         print("Output folder '"+ picsProcessedDirectory +"' aready exists. Images are either already resized or delete the folder.")
     print("-" * 100)
 
-# 2. Combine Excels to single CSV
+# 2. Normalize values
+def normalizeAttributesFile():
+    print("Normalizing Data ...")
+    CSVRootPath = CSVDetails['CSVRootPath']
+    toNormalize = CSVDetails['NormalizeData']['AttributesFile']
+    df = pd.read_csv(os.path.join(CSVRootPath, toNormalize['From']).replace("/", "\\"))
+
+    rawData = df.values
+    rawData[:,1:] = (rawData[:,1:]+1)/2
+    df = pd.DataFrame(rawData, columns=df.columns)
+   
+    df.to_csv(os.path.join(CSVRootPath, toNormalize['To']).replace("/", "\\"), index = False)
+
+    print("Files normalized")
+    print("-" * 100)
+
+# 3. Combine Excels to single CSV
 def combineExcels(): 
     print("Combining CSV files ...")
     CSVRootPath = CSVDetails['CSVRootPath']
-    CSVList = CSVDetails['CSVList']
+    CSVList = CSVDetails['CSVListToCombine']
     CombinedCSV = CSVDetails['CombinedCSV']
     if len(CSVList) == 0:
         print("No files selected to combine")
@@ -57,19 +73,17 @@ def combineExcels():
     print("Files combined")
     print("-" * 100)
 
-
-
-
-# 3. Remove blurred images
+# 4. Remove blurred images
 def deleteBlurredImages():
     pass
 
-# 4. Manual Filtering 
+# 5. Manual Filtering 
 def selectiveDelete():
     pass
 
 
 resizeImagesTo128x128()
+normalizeAttributesFile()
 combineExcels()
 deleteBlurredImages()
 selectiveDelete()
