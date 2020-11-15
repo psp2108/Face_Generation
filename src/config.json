@@ -23,5 +23,11 @@
             "OutputImage" : "test.png",
             "OutputFolder" : ""
         }
+    },
+    "DeleteRecords":{
+        "RecordList" : {
+            "Blurry": 1,
+            "Eyeglasses": 1
+        } 
     }
 }
