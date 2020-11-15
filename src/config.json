@@ -1,6 +1,6 @@
 {
     "ImageDetails" : {
-        "ImageRootPath" : "../datasets/29561_37705_bundle_archive",
+        "ImageRootPath" : "../datasets/29561_37705_bundle_archive/img_align_celeba",
         "ImageImages" : "img_align_celeba",
         "ImageProcessedImages" : "processed"
     },
