@@ -6,9 +6,9 @@ from PIL import Image
 
 with open("config.json", "r") as f:
     jsonFile = json.load(f)
-    CSVDetails = jsonFile['CSVDetails']
+    csvDetails = jsonFile['CSVDetails']
     dataset = jsonFile['ImageDetails']
-    DeleteRecords = jsonFile['DeleteRecords']
+    deleteRecords = jsonFile['DeleteRecords']
     
 # 1. Change the resolution of images
 def resizeImagesTo128x128():
@@ -38,47 +38,72 @@ def resizeImagesTo128x128():
         print("Output folder '"+ picsProcessedDirectory +"' aready exists. Images are either already resized or delete the folder.")
     print("-" * 100)
 
-# 2. Combine Excels to single CSV
+# 2. Normalize values
+def normalizeAttributesFile():
+    print("Normalizing Data ...")
+    csvRootPath = csvDetails['CSVRootPath']
+    toNormalize = csvDetails['NormalizeData']['AttributesFile']
+    df = pd.read_csv(os.path.join(csvRootPath, toNormalize['From']).replace("/", "\\"))
+
+    rawData = df.values
+    rawData[:,1:] = (rawData[:,1:]+1)/2
+    df = pd.DataFrame(rawData, columns=df.columns)
+   
+    df.to_csv(os.path.join(csvRootPath, toNormalize['To']).replace("/", "\\"), index = False)
+
+    print(toNormalize['From'], "normalized")
+    print("-" * 100)
+
+# 3. Combine Excels to single CSV
 def combineExcels(): 
     print("Combining CSV files ...")
-    CSVRootPath = CSVDetails['CSVRootPath']
-    CSVList = CSVDetails['CSVList']
-    CombinedCSV = CSVDetails['CombinedCSV']
-    if len(CSVList) == 0:
+    csvRootPath = csvDetails['CSVRootPath']
+    csvList = csvDetails['CSVListToCombine']
+    combinedCSV = csvDetails['CombinedCSV']
+    if len(csvList) == 0:
         print("No files selected to combine")
         return
-    df = pd.read_csv(os.path.join(CSVRootPath, CSVList[0]).replace("/", "\\"))
-    print("Reading file '"+ CSVList[0] +"'")
-    for i in range(1,len(CSVList)):
-        print("Reading file '"+ CSVList[i] +"'")
-        CSVFile = pd.read_csv(os.path.join(CSVRootPath, CSVList[i]).replace("/", "\\"))
-        df = df.merge(CSVFile, how = 'outer', on = 'image_id')
-    df.to_csv(os.path.join(CSVRootPath, CombinedCSV).replace("/", "\\"), index = False)
+
+    df = pd.read_csv(os.path.join(csvRootPath, csvList[0]).replace("/", "\\"))
+    print("Reading file '"+ csvList[0] +"'")
+
+    for i in range(1,len(csvList)):
+        print("Reading file '"+ csvList[i] +"'")
+        csvFile = pd.read_csv(os.path.join(csvRootPath, csvList[i]).replace("/", "\\"))
+        df = df.merge(csvFile, how = 'outer', on = 'image_id')
+
+    df.to_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"), index = False)
 
     print("Files combined")
     print("-" * 100)
 
-
-
-
 # 3. Remove Improper Records
 def deleteImproperRecords():
-    CSVRootPath = CSVDetails['CSVRootPath']
-    CombinedCSV = CSVDetails['CombinedCSV']
-    DeleteRecordList = DeleteRecords['RecordList']
-    df = pd.read_csv(os.path.join(CSVRootPath, CombinedCSV).replace("/", "\\"))    
-    for i in DeleteRecordList.keys():
-        df = df[df[i] != DeleteRecordList[i]]
-    df.drop(DeleteRecordList.keys(), axis = 1, inplace = True) 
-    print(df)
-    df.to_csv(os.path.join(CSVRootPath, CombinedCSV).replace("/", "\\"), index = False)
+    print("Deleting Improper Records ...")
+    csvRootPath = csvDetails['CSVRootPath']
+    combinedCSV = csvDetails['CombinedCSV']
+    deleteRecordList = deleteRecords['RecordList']
 
-# 4. Manual Filtering 
+    df = pd.read_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"))    
+    columnList = deleteRecordList.keys()
+
+    for i in columnList:
+        print("Deleting Records where {}={}".format(i, deleteRecordList[i]))
+        df = df[df[i] != deleteRecordList[i]]
+
+    print("Dropping columns {}".format(columnList))
+    df.drop(columnList, axis = 1, inplace = True) 
+    df.to_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"), index = False)
+    
+    print("Records Deleted")
+    print("-" * 100)
+
+# 5. Manual Filtering 
 def selectiveDelete():
     pass
 
-
-#resizeImagesTo128x128()
+resizeImagesTo128x128()
+normalizeAttributesFile()
 combineExcels()
 deleteImproperRecords()
 selectiveDelete()

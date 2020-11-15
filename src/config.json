@@ -6,8 +6,14 @@
     },
     "CSVDetails" : {
         "CSVRootPath" : "Z:/Programs/Final Year Project/29561_37705_bundle_archive",
-        "CSVList" : [
-            "list_attr_celeba.csv"
+        "NormalizeData" : {
+            "AttributesFile" : {
+                "From" : "list_attr_celeba.csv",
+                "To" : "attributes.csv"
+            }
+        },
+        "CSVListToCombine" : [
+            "attributes.csv"
         ],
         "CombinedCSV" : "combined.csv"
     },
@@ -25,8 +31,9 @@
         }
     },
     "DeleteRecords":{
-        "RecordList" : {"Blurry": 1,"Eyeglasses": 1} 
-
-
+        "RecordList" : {
+            "Blurry": 1,
+            "Eyeglasses": 1
+        } 
     }
 }
