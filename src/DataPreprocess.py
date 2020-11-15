@@ -98,12 +98,17 @@ def deleteImproperRecords():
     print("Records Deleted")
     print("-" * 100)
 
+# 4. Merge Columns
+def mergeAttributes():
+    pass
+
 # 5. Manual Filtering 
 def selectiveDelete():
     pass
 
-resizeImagesTo128x128()
-normalizeAttributesFile()
-combineExcels()
-deleteImproperRecords()
-selectiveDelete()
+# resizeImagesTo128x128()
+# normalizeAttributesFile()
+# combineExcels()
+# deleteImproperRecords()
+# selectiveDelete()
+mergeAttributes()

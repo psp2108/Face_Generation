@@ -35,5 +35,51 @@
             "Blurry": 1,
             "Eyeglasses": 1
         } 
+    },
+    "MergeAttributes": {
+        "features" : [
+            {
+                "Name" : "Hair_Color",
+                "Default" : 0,
+                "Conditions" : [
+                    {
+                        "If" : {
+                            "Black_Hair": 1,
+                            "Bald" : 0
+                        },
+                        "Then" : {
+                            "Value" : 0.25
+                        }
+                    },
+                    {
+                        "If" : {
+                            "Blond_Hair": 1,
+                            "Bald" : 0
+                        },
+                        "Then" : {
+                            "Value" : 0.5
+                        }
+                    },
+                    {
+                        "If" : {
+                            "Brown_Hair": 1,
+                            "Bald" : 0
+                        },
+                        "Then" : {
+                            "Value" : 0.75
+                        }
+                    },
+                    {
+                        "If" : {
+                            "Gray_Hair": 1,
+                            "Bald" : 0
+                        },
+                        "Then" : {
+                            "Value" : 1
+                        }
+                    }
+                ]
+            }
+        ]
     }
 }
