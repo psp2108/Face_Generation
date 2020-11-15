@@ -1,6 +1,6 @@
 {
     "ImageDetails" : {
-        "ImageRootPath" : "Z:/Programs/Final Year Project/29561_37705_bundle_archive/img_align_celeba",
+        "ImageRootPath" : "../datasets/29561_37705_bundle_archive/img_align_celeba",
         "ImageImages" : "img_align_celeba",
         "ImageProcessedImages" : "processed"
     },
