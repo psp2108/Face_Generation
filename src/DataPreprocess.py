@@ -8,10 +8,9 @@ with open("config.json", "r") as f:
     jsonFile = json.load(f)
     csvDetails = jsonFile['CSVDetails']
     dataset = jsonFile['ImageDetails']
-    deleteRecords = jsonFile['DeleteRecords']
+    deleteRecordList = jsonFile['DeleteRecords']
     attributesToMerge = jsonFile['MergeAttributes']
     columnsToDrop = jsonFile['DiscardAttributes']
-    manualCleaning = jsonFile['ManualCleaning']
     
 # 1. Change the resolution of images
 def resizeImagesTo128x128():
@@ -80,22 +79,18 @@ def combineExcels():
     print("Files combined")
     print("-" * 100)
 
-# 4. Remove Improper Records
+# 4. Remove Improper Records and Manual Filtering too 
 def deleteImproperRecords():
     print("Deleting Improper Records ...")
     csvRootPath = csvDetails['CSVRootPath']
     combinedCSV = csvDetails['CombinedCSV']
-    deleteRecordList = deleteRecords['RecordList']
 
     df = pd.read_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"))    
-    columnList = deleteRecordList.keys()
 
-    for i in columnList:
-        print("Deleting Records where {}={}".format(i, deleteRecordList[i]))
-        df = df[df[i] != deleteRecordList[i]]
+    for cols, values in deleteRecordList.items():
+        print("Deleting Records where {}={}".format(cols, values))
+        df = df[~df[cols].isin(values)]
 
-    print("Dropping columns {}".format(columnList))
-    df.drop(columnList, axis = 1, inplace = True) 
     df.to_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"), index = False)
     
     print("Records Deleted")
@@ -110,7 +105,7 @@ def mergeAttributes():
     df = pd.read_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"))   
     df.name = "df"
 
-    for eachAttribute in attributesToMerge['Features']:
+    for eachAttribute in attributesToMerge:
         newAttribute = eachAttribute['Name']
         print("Procssing", newAttribute)
         
@@ -121,8 +116,8 @@ def mergeAttributes():
 
             for col, val in eachCondition['If'].items():
                 expressionList.append("({}['{}']=={})".format(df.name, col, val))
-
-            df[newAttribute][eval(" & ".join(expressionList))] = eachCondition['Then']['Value']
+            
+            df.loc[eval(" & ".join(expressionList)), [newAttribute]] = eachCondition['Then']
 
     df.to_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"), index = False)
 
@@ -146,30 +141,12 @@ def dropColumns():
     print("All Attributes merged")
     print("-" * 100) 
 
-# 7. Manual Filtering 
-def selectiveDelete():
-    print("Manual deletion of records ...")
-    csvRootPath = csvDetails['CSVRootPath']
-    combinedCSV = csvDetails['CombinedCSV']
-
-    df = pd.read_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"))
-    
-    for eachColumn, values in manualCleaning.items():
-        for eachValue in tqdm(values):
-            df = df[df[eachColumn] != eachValue]
-
-    df.to_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"), index = False)
-    
-    print("Some records deleted")
-    print("-" * 100) 
-
 resizeImagesTo128x128()
 normalizeAttributesFile()
 combineExcels()
 deleteImproperRecords()
 mergeAttributes()
 dropColumns()
-selectiveDelete()
 
 csvRootPath = csvDetails['CSVRootPath']
 combinedCSV = csvDetails['CombinedCSV']
