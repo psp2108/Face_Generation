@@ -8,7 +8,7 @@ with open("config.json", "r") as f:
     jsonFile = json.load(f)
     csvDetails = jsonFile['CSVDetails']
     dataset = jsonFile['ImageDetails']
-    deleteRecordList = jsonFile['DeleteRecords']
+    deleteRecords = jsonFile['DeleteRecords']
     attributesToMerge = jsonFile['MergeAttributes']
     columnsToDrop = jsonFile['DiscardAttributes']
     
@@ -87,7 +87,7 @@ def deleteImproperRecords():
 
     df = pd.read_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"))    
 
-    for cols, values in deleteRecordList.items():
+    for cols, values in deleteRecords.items():
         print("Deleting Records where {}={}".format(cols, values))
         df = df[~df[cols].isin(values)]
 
