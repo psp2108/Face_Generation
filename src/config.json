@@ -19,13 +19,15 @@
     },
     "ModelDetails" : {
         "ModelLog" : "Model Log.csv",
-        "TrainedModel" : "Trained models",
+        "TrainedModel" : "Trained models 1",
         "SampleOutputs" : "Sample Outputs",
         "ModelDiagrams" : "Model diagrams",
-        "RandomVectorSize" : 100,
-        "TotalAttributes" : 40,
+        "ModelRootFolder" : "test6",
+        "CodeCopy": "Code-Copy",
+        "RandomVectorSize" : 75,
+        "TotalAttributes" : 25,
         "Testing" : {
-            "Attributes" : [-1,-1,1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,1,-1,-1,-1,1,1,1,-1,-1,-1,-1,-1,-1,-1,1,-1,1,-1,-1,-1,-1,-1,1,-1],
+            "Attributes" : [1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,1.0,0.875,1.0,0.0],
             "OutputImage" : "test.png",
             "OutputFolder" : ""
         }
@@ -33,6 +35,7 @@
     "DeleteRecords":{
         "Blurry": [1],
         "Eyeglasses": [1],
+        "Wearing_Hat": [1],
         "image_id": [
             "000001.jpg",
             "000028.jpg",
@@ -96,13 +99,19 @@
             "002289.jpg",
             "002583.jpg",
             "002697.jpg",
-            "003172.jpg"
+            "003172.jpg",
+            "003180.jpg",
+            "003190.jpg",
+            "003283.jpg",
+            "003307.jpg",
+            "003323.jpg",
+            "003455.jpg"
         ]
     },
     "MergeAttributes": [
         {
             "Name" : "Hair_Color",
-            "Default" : 0,
+            "Default" : 0.0,
             "Conditions" : [
                 {
                     "If" : {
@@ -143,6 +152,69 @@
                     "Then" : 0.875
                 }
             ]
+        },
+                
+        {
+            "Name" : "Hair_Size",
+            "Default" : 0.0,
+            "Conditions" : [
+                {
+                    "If" : {
+                        "Bald": 1,
+                        "Receding_Hairline":1
+                    },
+                    "Then" : 0.5
+                },
+                {
+                    "If" : {
+                        "Bald": 1,
+                        "Receding_Hairline":0
+                    },
+                    "Then" : 0.0
+                },
+                {
+                    "If" : {
+                        "Bald": 0,
+                        "Receding_Hairline":1
+                    },
+                    "Then" : 0.5
+                },
+                {
+                    "If" : {
+                        "Bald": 0,
+                        "Receding_Hairline":0
+                    },
+                    "Then" : 1.0
+                }
+            ]
+        },
+                
+        {
+            "Name" : "Combine_Eyebrow",
+            "Default" : 0.0,
+            "Conditions" : [
+                {
+                    "If" : {
+                        "Arched_Eyebrows": 0,
+                        "Bushy_Eyebrows" : 1
+                    },
+                    "Then" : 1.0
+                },
+                {
+                    "If" : {
+                        "Arched_Eyebrows": 1,
+                        "Bushy_Eyebrows" : 1
+                    },
+                    "Then" : 0.5
+                },
+                {
+                    "If" : {
+                        "Arched_Eyebrows": 1,
+                        "Bushy_Eyebrows" : 0
+                    },
+                    "Then" : 0.0
+                }
+            ]
         }
     ],
     
@@ -152,6 +224,20 @@
         "Brown_Hair",
         "Black_Hair",
         "Blurry",
-        "Eyeglasses"
+        "Eyeglasses",
+        "Wearing_Hat",
+        "Arched_Eyebrows",
+        "Bushy_Eyebrows",
+        "Receding_Hairline",
+        "Bald",
+
+        "Attractive",
+
+        "Wearing_Necktie",
+        "Wearing_Necklace",
+        "Mouth_Slightly_Open",
+        "Wearing_Lipstick",
+        "Bangs",
+        "Wearing_Earrings"
     ]
 }
