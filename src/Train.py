@@ -111,7 +111,7 @@ else:
     modelLogFile.writelines("Iterations, Discriminator Loss, Adversary Loss, Image number, Loop\n")
     modelLogFile.close()
 
-copyCode(codeCopy)
+    copyCode(codeCopy)
 
 # Test Generator image
 features = tf.random.normal(shape=[1, featuresLengthLength])
