@@ -19,7 +19,7 @@ def plotSaveImage(image, savePath = ''):
 with open("config.json", "r") as f:
     jsonFile = json.load(f)
     modelDetails = jsonFile['ModelDetails']
-modelPath = os.path.join(modelDetails['TrainedModel'], 'generator_latest.h5')
+modelPath = os.path.join(modelDetails['ModelRootFolder'], modelDetails['TrainedModel'], 'generator_latest.h5')
 
 generator = keras.models.load_model(modelPath)
 
