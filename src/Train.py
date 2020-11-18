@@ -9,6 +9,7 @@ import pandas as pd
 import os
 from tqdm import tqdm
 import json
+import shutil
 
 def plotSaveImage(image, savePath = ''):
     data = (image.numpy() * 255)[0]
@@ -39,6 +40,20 @@ def getMetaData(rawData, start, batchSize, rootPath = ''):
         return (images, attributes)
     return (picNames, attributes)
 
+def copyCode(rootFolder):
+    codeFiles = [
+        "Discriminator.py",
+        "Generator.py",
+        "gan.py",
+        "Train.py",
+        "LoadModel.py",
+        "DataPreprocess.py",
+        "config.json"
+    ]
+
+    for eachFile in codeFiles:
+        shutil.copy(eachFile, os.path.join(rootFolder, eachFile))
+
 with open("config.json", "r") as f:
     jsonFile = json.load(f)
     CSVDetails = jsonFile['CSVDetails']
@@ -47,24 +62,27 @@ with open("config.json", "r") as f:
 
 picsPath = os.path.join(dataset['ImageRootPath'], dataset['ImageProcessedImages']).replace("/", "\\")
 csvPath = os.path.join(CSVDetails['CSVRootPath'], CSVDetails['CombinedCSV']).replace("/", "\\")
-modelLog = modelDetails['ModelLog'].replace("/", "\\")
-modelCopy = modelDetails['TrainedModel'].replace("/", "\\")
-sampleOutput = modelDetails['SampleOutputs'].replace("/", "\\")
+modelRootFolder = modelDetails['ModelRootFolder'].replace("/", "\\")
+modelLog = os.path.join(modelRootFolder, modelDetails['ModelLog'])
+modelCopy = os.path.join(modelRootFolder, modelDetails['TrainedModel'])
+sampleOutput = os.path.join(modelRootFolder, modelDetails['SampleOutputs'])
+codeCopy = os.path.join(modelRootFolder, modelDetails['CodeCopy'])
 
 data = pd.read_csv(csvPath)
 numpyData = data.values
 
 randomNoiseLength = modelDetails['RandomVectorSize']
-batchSize = 16
+featuresLengthLength = modelDetails['TotalAttributes']
+batchSize = 25
 start = 0
 iterationsFrom = 0
 iterations = 50000
 loop = 0
-stepLimit = len(numpyData) - batchSize
+stepLimit = (len(numpyData) * 0.75) - batchSize
 # stepLimit = 10000
 
-saveModelInterval = 10
-showImageInterval = 2
+saveModelInterval = 50
+showImageInterval = 10
 
 controlSizeOfSampleImages = 6
 
@@ -86,14 +104,17 @@ if os.path.isdir(modelCopy):
 else:
     os.makedirs(modelCopy)
     os.makedirs(sampleOutput)
+    os.makedirs(codeCopy)
     gan, generator, discriminator = getGanModel()
 
     modelLogFile = open(modelLog, "w")
     modelLogFile.writelines("Iterations, Discriminator Loss, Adversary Loss, Image number, Loop\n")
     modelLogFile.close()
 
+copyCode(codeCopy)
+
 # Test Generator image
-features = tf.random.normal(shape=[1, 40])
+features = tf.random.normal(shape=[1, featuresLengthLength])
 randomNoise = tf.random.normal(shape=[1, randomNoiseLength])
 gImage = generator([features, randomNoise], training=False)
 plotSaveImage(gImage)
