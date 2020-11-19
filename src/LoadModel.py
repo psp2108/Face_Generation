@@ -57,4 +57,6 @@ print()
 print("-"*100)
 
 print("Shape of image(s) generated:", gImage.shape)
+if not os.path.exists(modelDetails['Testing']['OutputFolder']):
+    os.makedirs(modelDetails['Testing']['OutputFolder'])
 plotSaveImage(gImage, os.path.join(modelDetails['Testing']['OutputFolder'], modelDetails['Testing']['OutputImage']))
