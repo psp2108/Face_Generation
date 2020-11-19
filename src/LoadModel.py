@@ -14,6 +14,7 @@ def plotSaveImage(image, savePath = ''):
     data = (image.numpy() * 255)[0]
     data = data.astype('uint8')
     plt.imshow(data, cmap=plt.cm.viridis)
+    plt.axis('off')
     plt.show()
     if len(savePath):
         rescaled = (255.0 / data.max() * (data - data.min())).astype(np.uint8)
