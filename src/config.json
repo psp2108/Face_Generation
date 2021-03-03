@@ -27,10 +27,10 @@
         "RandomVectorSize" : 7,
         "TotalAttributes" : 25,
         "Testing" : {
-            "Version" : "18300",
-            "Attributes" : [0.0,1.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.5,1.0,0.0],
-            "OutputImage" : "test.png",
-            "OutputFolder" : ""
+            "Version" : "16700",
+            "Attributes" : [0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,1.0,0.0,1.0,1.0,1.0,0.0,1.0,0.75,1.0,0.0],
+            "OutputImage" : "000270.jpg-2.png",
+            "OutputFolder" : "GeneratedImages"
         }
     },
     "DeleteRecords":{

@@ -29,6 +29,14 @@ def getGanModel():
 
 def main():
     gan, generator, discriminator = getGanModel()
+    
+    print("---> Generator Summary")
+    generator.summary()
+
+    print("---> Discriminator Summary")
+    discriminator.summary()
+
+    print("---> GAN Summary")
     gan.summary()
 
     with open("config.json", "r") as f:
