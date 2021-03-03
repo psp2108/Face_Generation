@@ -38,12 +38,14 @@ randomNoise = tf.random.normal(shape=[1, modelDetails['RandomVectorSize']])
 
 gImage = generator([features, randomNoise], training=False)
 
+# Just to get the Attributes Headers
 temp = open(os.path.join(csvDetails["CSVRootPath"], csvDetails["CombinedCSV"]), "r")
 attributesList = temp.readline().replace("\n","").split(",")[1:]
 temp.close()
 
 maxLen = 20
 
+# Logging the attributes supplied with its corresponding attribute name
 print("-"*100)
 print("Attributes passed")
 print("-"*100)
