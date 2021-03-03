@@ -72,7 +72,7 @@ data = pd.read_csv(csvPath)
 numpyData = data.values
 
 randomNoiseLength = modelDetails['RandomVectorSize']
-featuresLengthLength = modelDetails['TotalAttributes']
+featuresLength = modelDetails['TotalAttributes']
 batchSize = 25
 start = 0
 iterationsFrom = 0
@@ -114,7 +114,7 @@ else:
     copyCode(codeCopy)
 
 # Test Generator image
-features = tf.random.normal(shape=[1, featuresLengthLength])
+features = tf.random.normal(shape=[1, featuresLength])
 randomNoise = tf.random.normal(shape=[1, randomNoiseLength])
 gImage = generator([features, randomNoise], training=False)
 plotSaveImage(gImage)
