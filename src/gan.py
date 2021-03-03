@@ -10,8 +10,8 @@ def getGanModel():
     generator = getGeneratorModel()
     discriminator = getDiscriminatorModel()
 
-    # RMSprop -> Gradient based optimization technique
-    opt = keras.optimizers.RMSprop(lr=0.0001)
+    # opt = keras.optimizers.Adam(lr=0.0002, beta_1=0.5)
+    opt = keras.optimizers.RMSprop(lr=0.0001, clipvalue=1.0, decay=1e-8)
     discriminator.compile(loss='binary_crossentropy', optimizer=opt)
     discriminator.trainable = False
 
@@ -22,21 +22,13 @@ def getGanModel():
 
     ganModel = keras.models.Model([generatorNoise, generatorAttributes], ganOutput)
 
-    # RMSprop -> Gradient based optimization technique
-    opt = keras.optimizers.RMSprop(lr=0.0001)
+    # opt = keras.optimizers.Adam(lr=0.0002, beta_1=0.5)
+    opt = keras.optimizers.RMSprop(lr=0.0001, clipvalue=1.0, decay=1e-8)
     ganModel.compile(loss='binary_crossentropy', optimizer=opt)
     return ganModel, generator, discriminator
 
 def main():
     gan, generator, discriminator = getGanModel()
-    
-    print("---> Generator Summary")
-    generator.summary()
-
-    print("---> Discriminator Summary")
-    discriminator.summary()
-
-    print("---> GAN Summary")
     gan.summary()
 
     with open("config.json", "r") as f:
