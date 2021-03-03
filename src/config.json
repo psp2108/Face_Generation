@@ -24,12 +24,13 @@
         "ModelDiagrams" : "Model diagrams",
         "ModelRootFolder" : "test6",
         "CodeCopy": "Code-Copy",
-        "RandomVectorSize" : 75,
+        "RandomVectorSize" : 7,
         "TotalAttributes" : 25,
         "Testing" : {
-            "Attributes" : [1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,1.0,0.875,1.0,0.0],
-            "OutputImage" : "test.png",
-            "OutputFolder" : ""
+            "Version" : "16700",
+            "Attributes" : [0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,1.0,0.0,1.0,1.0,1.0,0.0,1.0,0.75,1.0,0.0],
+            "OutputImage" : "000270.jpg-2.png",
+            "OutputFolder" : "GeneratedImages"
         }
     },
     "DeleteRecords":{
