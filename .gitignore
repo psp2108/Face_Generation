@@ -4,3 +4,4 @@ datasets
 **/.vscode
 **/.ipynb_checkpoints
 **/test*
+**/GeneratedImages
