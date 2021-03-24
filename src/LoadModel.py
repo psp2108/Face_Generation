@@ -128,6 +128,7 @@ class GeneratorModule():
         if str(randomNoise) == 'None':
             randomNoise = self.getRandomVector()
 
+        print(">>>>>>>>>>>>", randomNoise)
         self.gImage = self.generator([features, randomNoise], training=False)
         
         if autoSave:
