@@ -125,7 +125,6 @@ class GeneratorModule():
     def getImage(self, features, randomVector = None, autoSave = False, autoShow = False, imageName = None):
         features = self.getFeatureVectorFromDict(features)
         randomNoise = self.getRandomVectorFromDict(randomVector) 
-        print(randomNoise)
         if str(randomNoise) == 'None':
             randomNoise = self.getRandomVector()
 
