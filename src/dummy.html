@@ -4,10 +4,60 @@
     <body>
         <img src="http://127.0.0.1/get_image/?tag=1" id="img1">
         <button id="btn1" value="CLik me" onclick="press()">Click me</button>
+        <br><br>
+        <label for="5_o_clock_shadow">5_o_clock_shadow:</label> <input type="range" min="0" max="100" value="0.0" id="5_o_clock_shadow"> <br>
+        <label for="bags_under_eyes">bags_under_eyes:</label> <input type="range" min="0" max="100" value="0.0" id="bags_under_eyes"> <br>
+        <label for="big_lips">big_lips:</label> <input type="range" min="0" max="100" value="0.0" id="big_lips"> <br>
+        <label for="big_nose">big_nose:</label> <input type="range" min="0" max="100" value="0.0" id="big_nose"> <br>
+        <label for="chubby">chubby:</label> <input type="range" min="0" max="100" value="0.0" id="chubby"> <br>
+        <label for="double_chin">double_chin:</label> <input type="range" min="0" max="100" value="0.0" id="double_chin"> <br>
+        <label for="goatee">goatee:</label> <input type="range" min="0" max="100" value="0.0" id="goatee"> <br>
+        <label for="heavy_makeup">heavy_makeup:</label> <input type="range" min="0" max="100" value="100.0" id="heavy_makeup"> <br>
+        <label for="high_cheekbones">high_cheekbones:</label> <input type="range" min="0" max="100" value="100.0" id="high_cheekbones"> <br>
+        <label for="male">male:</label> <input type="range" min="0" max="100" value="0.0" id="male"> <br>
+        <label for="mustache">mustache:</label> <input type="range" min="0" max="100" value="0.0" id="mustache"> <br>
+        <label for="narrow_eyes">narrow_eyes:</label> <input type="range" min="0" max="100" value="0.0" id="narrow_eyes"> <br>
+        <label for="no_beard">no_beard:</label> <input type="range" min="0" max="100" value="100.0" id="no_beard"> <br>
+        <label for="oval_face">oval_face:</label> <input type="range" min="0" max="100" value="100.0" id="oval_face"> <br>
+        <label for="pale_skin">pale_skin:</label> <input type="range" min="0" max="100" value="0.0" id="pale_skin"> <br>
+        <label for="pointy_nose">pointy_nose:</label> <input type="range" min="0" max="100" value="100.0" id="pointy_nose"> <br>
+        <label for="rosy_cheeks">rosy_cheeks:</label> <input type="range" min="0" max="100" value="0.0" id="rosy_cheeks"> <br>
+        <label for="sideburns">sideburns:</label> <input type="range" min="0" max="100" value="100.0" id="sideburns"> <br>
+        <label for="smiling">smiling:</label> <input type="range" min="0" max="100" value="100.0" id="smiling"> <br>
+        <label for="straight_hair">straight_hair:</label> <input type="range" min="0" max="100" value="100.0" id="straight_hair"> <br>
+        <label for="wavy_hair">wavy_hair:</label> <input type="range" min="0" max="100" value="0.0" id="wavy_hair"> <br>
+        <label for="young">young:</label> <input type="range" min="0" max="100" value="100.0" id="young"> <br>
+        <label for="hair_color">hair_color:</label> <input type="range" min="0" max="100" value="75.0" id="hair_color"> <br>
+        <label for="hair_size">hair_size:</label> <input type="range" min="0" max="100" value="100.0" id="hair_size"> <br>
+        <label for="combine_eyebrow">combine_eyebrow:</label> <input type="range" min="0" max="100" value="0.0" id="combine_eyebrow"> <br>
+
+        <br>
+
+        <label for="rv0">rv0:</label> <input type="range" min="0" max="40000" value="17917" id="rv0"> <br>
+        <label for="rv1">rv1:</label> <input type="range" min="0" max="40000" value="18143" id="rv1"> <br>
+        <label for="rv2">rv2:</label> <input type="range" min="0" max="40000" value="8966" id="rv2"> <br>
+        <label for="rv3">rv3:</label> <input type="range" min="0" max="40000" value="29206" id="rv3"> <br>
+        <label for="rv4">rv4:</label> <input type="range" min="0" max="40000" value="13653" id="rv4"> <br>
+        <label for="rv5">rv5:</label> <input type="range" min="0" max="40000" value="13822" id="rv5"> <br>
+        <label for="rv6">rv6:</label> <input type="range" min="0" max="40000" value="20095" id="rv6"> <br>
         <script>
             function press()
             {
-                document.getElementById('img1').src="http://127.0.0.1/get_image/?tag=2"
+                var arr = [
+                    '5_o_clock_shadow', 'bags_under_eyes', 'big_lips', 'big_nose', 'chubby', 'double_chin', 'goatee', 
+                    'heavy_makeup', 'high_cheekbones', 'male', 'mustache', 'narrow_eyes', 'no_beard', 'oval_face', 
+                    'pale_skin', 'pointy_nose', 'rosy_cheeks', 'sideburns', 'smiling', 'straight_hair', 'wavy_hair', 
+                    'young', 'hair_color', 'hair_size', 'combine_eyebrow', 'rv0', 'rv1', 'rv2', 'rv3', 'rv4', 'rv5', 
+                    'rv6'
+                ]
+                
+                for(var i=0; i<32; i++){
+                    arr[i] += ("=" + +document.getElementById(arr[i]).value / 1000);
+                }
+                var all_attribs = arr.join('&');
+
+                // document.getElementById('img1').src="http://127.0.0.1/get_image/?tag=2"
+                document.getElementById('img1').src="http://127.0.0.1/get_image/?" + all_attribs
             }
         </script>
     </body>

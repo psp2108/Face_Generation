@@ -3,15 +3,20 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 from matplotlib import pyplot as plt
 import tensorflow as tf 
+
+# To resolve GEMM error
+physical_devices = tf.config.list_physical_devices('GPU') 
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
+
 from tensorflow import keras
 from PIL import Image
 import numpy as np
 
 import json
 
-class generatorModule():
+class GeneratorModule():
 
-    def __init__(self):
+    def __init__(self, quick = False):
         with open("config.json", "r") as f:
             jsonFile = json.load(f)
             self.modelDetails = jsonFile['ModelDetails']
@@ -35,7 +40,8 @@ class generatorModule():
         self.attributesListOrder = temp.readline().lower().replace("\n","").split(",")[1:]
         temp.close()
 
-        self.loadGenerator()
+        if not quick:
+            self.loadGenerator()
 
     def setOutputFolder(self, outputFolder):
         self.outputFolder = outputFolder
@@ -50,7 +56,7 @@ class generatorModule():
         return self.dummyAttributes
 
     def getFeatureVectorFromDict(self, args):
-        if (type(args) == type(list())):
+        if (isinstance(args, list)):
             return np.asarray(np.array([args])).astype('float32')
 
         featureList = [0] * self.featureVectorSize
@@ -58,25 +64,25 @@ class generatorModule():
         for i in range(self.featureVectorSize):
             featureList[i] = args[self.attributesListOrder[i]]
 
-        return np.asarray(np.array(featureList)).astype('float32')
+        return np.asarray(np.array([featureList])).astype('float32')
 
     def getRandomVectorFromDict(self, args):
-        if (type(args) == type(list())):
-            return np.asarray(np.array(args)).astype('float32')
+        if (isinstance(args, list)):
+            return np.asarray(np.array([args])).astype('float32')
         elif (type(args) ==  type(tf.random.normal(shape=[0]))):
             return args
-        elif args == None:
+        elif (isinstance(args, dict)):
+            randomList = [0] * self.randomVectorSize
+
+            try:
+                for i in range(self.randomVectorSize):
+                    randomList[i] = args["rv{}".format(i)]
+            except:
+                return None
+
+            return np.asarray(np.array([randomList])).astype('float32')
+        else: # args == None:
             return None
-
-        randomList = [0] * self.randomVectorSize
-
-        try:
-            for i in range(self.randomVectorSize):
-                randomList[i] = args["rv{}".format(i)]
-        except:
-            return None
-
-        return np.asarray(np.array(randomList)).astype('float32')
 
     def getRandomVector(self):
         return tf.random.normal(shape=[1, self.randomVectorSize])
@@ -98,6 +104,7 @@ class generatorModule():
 
     def loadGenerator(self):
         self.generator = keras.models.load_model(self.modelPath.format(self.modelVersion))
+        print("GENERATOR LOADED")
 
     def saveImage(self, imageName = None):
         data = (self.gImage.numpy() * 255)[0]
@@ -118,7 +125,8 @@ class generatorModule():
     def getImage(self, features, randomVector = None, autoSave = False, autoShow = False, imageName = None):
         features = self.getFeatureVectorFromDict(features)
         randomNoise = self.getRandomVectorFromDict(randomVector) 
-        if randomNoise == None:
+        print(randomNoise)
+        if str(randomNoise) == 'None':
             randomNoise = self.getRandomVector()
 
         self.gImage = self.generator([features, randomNoise], training=False)
@@ -133,12 +141,12 @@ class generatorModule():
 
         return self.gImage
 
-    def getOutputImagePath():
+    def getOutputImagePath(self):
         return self.outputImagePath
 
 if __name__ == "__main__":
     print(tf.random.normal(shape=[1]), type(tf.random.normal(shape=[0])))
-    gen = generatorModule()
+    gen = GeneratorModule()
     attributesOrder = gen.getAttributesOrder()
     attributes = gen.getDummyAttributes()
     randomNoise = gen.getRandomVector()
@@ -156,7 +164,44 @@ if __name__ == "__main__":
     print()
     print("-"*100)
 
+    randomNoise = [1,0,0.1,0.2,0.3,0.4,0.5]
+
+    temp_dict = {
+        '5_o_clock_shadow': 0.0,
+        'bags_under_eyes': 0.0,
+        'big_lips': 0.0,
+        'big_nose': 0.0,
+        'chubby': 0.0,
+        'double_chin': 0.0,
+        'goatee': 0.0,
+        'heavy_makeup': 0.1,
+        'high_cheekbones': 0.1,
+        'male': 0.0,
+        'mustache': 0.0,
+        'narrow_eyes': 0.0,
+        'no_beard': 0.1,
+        'oval_face': 0.1,
+        'pale_skin': 0.0,
+        'pointy_nose': 0.1,
+        'rosy_cheeks': 0.0,
+        'sideburns': 0.1,
+        'smiling': 0.1,
+        'straight_hair': 0.1,
+        'wavy_hair': 0.0,
+        'young': 0.1,
+        'hair_color': 0.075,
+        'hair_size': 0.1,
+        'combine_eyebrow': 0.0,
+        'rv0': 17.917,
+        'rv1': 18.143,
+        'rv2': 8.966,
+        'rv3': 29.206,
+        'rv4': 13.653,
+        'rv5': 13.822,
+        'rv6': 20.095
+    }
+
     gen.getImage(attributes, randomVector = randomNoise, autoShow = True, autoSave = True, imageName = "test")
-    gen.getImage(attributes, autoShow = True, autoSave = True, imageName = "test")
-    gen.getImage(attributes, autoShow = True, autoSave = True, imageName = "test")
-    gen.getImage(attributes, autoShow = True, autoSave = True, imageName = "test")
+    gen.getImage(temp_dict, autoShow = True, autoSave = True, imageName = "test")
+    # gen.getImage(attributes, autoShow = True, autoSave = True, imageName = "test")
+    # gen.getImage(attributes, autoShow = True, autoSave = True, imageName = "test")
