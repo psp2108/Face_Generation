@@ -5,8 +5,11 @@ from matplotlib import pyplot as plt
 import tensorflow as tf 
 
 # To resolve GEMM error
-physical_devices = tf.config.list_physical_devices('GPU') 
-tf.config.experimental.set_memory_growth(physical_devices[0], True)
+try:
+    physical_devices = tf.config.list_physical_devices('GPU') 
+    tf.config.experimental.set_memory_growth(physical_devices[0], True)
+except:
+    print("No GPU found. Using CPU...")
 
 from tensorflow import keras
 from PIL import Image
