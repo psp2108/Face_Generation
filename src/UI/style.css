@@ -1,0 +1,425 @@
+
+	/* Main Feautres */
+	.mediaViewInfo {
+		--web-view-name: Home;
+		--web-view-id: Home;
+		--web-scale-on-resize: true;
+		--web-enable-deep-linking: true;
+	}
+	:root {
+		--web-view-ids: Home;
+	}
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		border: none;
+	}
+
+	
+
+	/* Feature Selection CSS */
+	.FEATURE_SELECTION {
+		font-family: Segoe UI;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 40px;
+		color: rgba(112,112,112,1);
+	}
+	#feature_text{
+		padding-left: 5%;
+	}
+	
+	#GENDER {
+		top: 10%;
+		left: 0;
+		white-space: nowrap;
+		text-align: left;
+		font-family: Segoe UI;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 30px;
+		color: rgba(112,112,112,1);
+	}
+	#gender_text{
+		padding-left: 10%;
+	}
+
+	/* Preview Image Div */
+	#image_screen {
+		top: 10%;
+		left: 50%;
+		width: 50%;
+		padding-left: 10%;
+		background: rgb(240, 191, 211);
+		background-position: center center;
+		background-size: cover;
+		height: 100%;
+		border: 1px solid #3f3a3e;
+	}
+
+	/* main Criteria CSS(Categories) */
+	.workframe {
+		position: absolute;
+		width: 50%;
+	   height: 100%;
+	}
+	#selections {
+		top: 40%;
+		left: 0;
+		height: 70%;
+	} 	
+	
+	/*Gender Buttons  */
+	.btn-circle {
+		width: 45px;
+		height: 45px;
+		line-height: 45px;
+		text-align: center;
+		padding: 0;
+		border-radius: 50%;
+		background: #f7f7f7;
+    	box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.08);
+		margin: 5%;
+	  }
+	  
+	  .btn-circle-xl {
+		width: 90px;
+		height: 90px;
+		line-height: 90px;
+		font-size: 1.3rem;
+		border-bottom: solid 2px #d8d8d8;
+		
+	  }
+	 
+	  .btn:active{
+		/* background-image: -webkit-linear-gradient(#efefef 0%, #d6d6d6 100%); */
+		box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 2px 2px rgba(0, 0, 0, 0.19);
+		border-bottom: solid 2px #d8d8d8;
+		
+		
+		/* border-color: red; */
+	}
+	
+	#male{
+		background: url(man.svg) no-repeat top left;
+		background-size: contain;
+		cursor: pointer;
+		/* display: inline-block; */
+		/* height: 52px;
+		width: 40px; */
+	}
+
+	#female{
+		background: url(female.svg) no-repeat top left;
+		background-size: contain;
+		cursor: pointer;
+		/* display: inline-block; */
+		/* height: 52px;
+		width: 40px; */
+	}
+	.criteria{
+		overflow: visible;
+		width: 64px;
+		margin-top: 20px;
+		white-space: nowrap;
+		text-align: left;
+		font-family: Segoe UI;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 30px;
+		color: rgba(112,112,112,1);
+	}
+
+	/* Main category box */
+	input[type='checkbox'] {
+		 display: none; } 
+
+
+	.lbl-toggle { 
+		display: block; 
+		font-family: Segoe UI;
+		font-style: normal;
+		font-weight: normal;
+		font-size: 20px;
+		text-transform: uppercase; 
+		text-align: left;
+		padding: 1rem; 
+		color: rgb(92, 89, 91); 
+		background: #fcfcfc; 
+		cursor: pointer;
+		border-radius: 7px; 
+		border: 1px solid rgb(63, 63, 63);
+		transition: all 0.25s ease-out; }
+	 
+	.lbl-toggle:hover {
+		 color: rgb(226, 24, 182); }
+
+	.lbl-toggle::before { 
+		content: ' ';
+		display: inline-block;
+		border-top: 5px solid transparent; 
+		border-bottom: 5px solid transparent; 
+		border-left: 5px solid currentColor; 
+		vertical-align: middle;
+		margin-right: .7rem; 
+		transform: translateY(-2px); 
+		transition: transform .2s ease-out; }
+	 
+	.toggle:checked+.lbl-toggle::before {
+		 transform: rotate(90deg) translateX(-3px); }
+
+	/* Inner Content of the box */
+	 .collapsible-content {
+		max-height: 0px;
+		overflow: hidden;
+		transition: max-height .25s ease-in-out; 
+		padding-left: 20px;
+	
+	}
+		
+	 .toggle:checked + .lbl-toggle + .collapsible-content {
+		  max-height: 350px; } 
+		
+	 .toggle:checked+.lbl-toggle {
+		  border-bottom-right-radius: 0; 
+		  border-bottom-left-radius: 0; 
+		}
+	
+	 .collapsible-content .content-inner { 
+		 background: rgba(255, 255, 255, 0.2); 
+		 border-bottom: 1px solid rgba(49, 44, 48, 0.45); 
+		 border-bottom-left-radius: 7px; 
+		 border-bottom-right-radius: 7px; 
+		  margin-bottom: 0; }
+
+.content {
+  	display: block;
+  	color: #7d7d7d;
+  	font-family: Segoe UI;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 20px;
+}
+
+/* For horizontal distribution in options */
+.labelish {
+    display: block;
+    margin-block-start: 0.3em;
+    margin-block-end: 0.2em;
+    /* margin-inline-start: 0px;
+    margin-inline-end: 0px; */
+}
+
+.floatBlock {
+  margin: 0 1.81em 0 0;	
+}
+
+#Lipcontainter,#Haircontainter{
+	border: none;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	break-before: always;
+}
+
+.Options{
+	border: none;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	break-before: always;
+	margin: 0 0 2em 0;
+}
+
+.Options1{
+	border: none;
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	break-before: always;
+	margin: 0 0 0em 0;
+}
+
+/* the next buttons */
+.next_prev {
+	background-color: #ee6090;
+	border-radius: 15px;
+	color: #ffffff;
+	border: none;
+	padding: 10px 40px;
+	margin-top: 5%;
+	margin-right: 2px;
+	font-family: Segoe UI;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 20px;
+	cursor: pointer;
+  }
+  
+  .next_prev:hover {
+	opacity: 0.8;
+  }
+  
+  #prevBtn {
+	background-color: #bbbbbb;
+  }
+
+  /* Small circles showing progress */
+  .step {
+	height: 15px;
+	width: 15px;
+	margin: 0 2px;
+	background-color: #bbbbbb;
+	border: none;  
+	border-radius: 50%;
+	display: inline-block;
+	opacity: 0.5;
+  }
+  
+  .step.active {
+	opacity: 1;
+  }
+  
+  /* Mark the steps that are finished and valid: */
+  .step.finish {
+	background-color: #f09bf0;
+  }
+
+  /* Checkbox CSS */
+  .container {
+	display: block;
+	position: relative;
+	padding-left: 35px;
+	margin-bottom: 12px;
+	cursor: pointer;
+	color: #7d7d7d;
+	font-family: Segoe UI;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 20px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .container input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 25px;
+	width: 25px;
+	background-color: #eee;
+	border-radius: 50%;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  .container:hover input ~ .checkmark {
+	background-color: #ccc;
+  }
+  
+  /* When the checkbox is checked, add a blue background */
+  .container input:checked ~ .checkmark {
+	background-color: #2196F3;
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .container input:checked ~ .checkmark:after {
+	display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .container .checkmark:after {
+	left: 9px;
+	top: 5px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+  }
+
+  /* Radio Button CSS  */
+.radiotype {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.radiotype input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.check {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.radiotype:hover input ~ .check {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.radiotype input:checked ~ .check {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.check:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radiotype input:checked ~ .check:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radiotype .check:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
