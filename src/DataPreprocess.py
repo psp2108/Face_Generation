@@ -87,9 +87,21 @@ def deleteImproperRecords():
 
     df = pd.read_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"))    
 
-    for cols, values in deleteRecords.items():
-        print("Deleting Records where {}={}".format(cols, values))
-        df = df[~df[cols].isin(values)]
+    tempIndex = df.index
+    print(tempIndex)
+
+    for conditions in deleteRecords:
+        listOfSets = []
+        print("Deleting Records where {}".format(conditions))
+        for cols,values in conditions.items():
+            tempIndex = df[(df[cols].isin(values))].index
+            listOfSets.append(set(list(tempIndex)))
+
+        finalSet = listOfSets[0]
+        for i in range(1, len(listOfSets)):
+            finalSet = finalSet.intersection(listOfSets[i])
+        
+        df.drop(list(finalSet), inplace = True)
 
     df.to_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"), index = False)
     
@@ -141,12 +153,43 @@ def dropColumns():
     print("All Attributes merged")
     print("-" * 100) 
 
+def balanceGender():
+    print("Balancing Gender ...")
+    csvRootPath = csvDetails['CSVRootPath']
+    combinedCSV = csvDetails['CombinedCSV']
+    df = pd.read_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"))
+    
+    maleIndices = list(df[(df["Male"]==1)].index)
+    femaleIndices = list(df[(df["Male"]==0)].index)
+
+    deleteCount = abs(len(maleIndices) - len(femaleIndices))
+    deleteFrom = []
+
+    if len(femaleIndices) > len(maleIndices):
+        deleteFrom = femaleIndices
+    elif len(maleIndices) > len(femaleIndices):
+        deleteFrom = maleIndices
+
+    newList = []
+    if deleteCount:
+        stepSize = len(deleteFrom) / deleteCount
+        for i in range(deleteCount):
+            newList.append(deleteFrom[int(i * stepSize)])
+
+    df.drop(newList, inplace = True)
+    
+    df.to_csv(os.path.join(csvRootPath, combinedCSV).replace("/", "\\"), index = False)
+    
+    print("Gender Balanced")
+    print("-" * 100)
+
 resizeImagesTo128x128()
 normalizeAttributesFile()
 combineExcels()
 deleteImproperRecords()
 mergeAttributes()
 dropColumns()
+balanceGender()
 
 csvRootPath = csvDetails['CSVRootPath']
 combinedCSV = csvDetails['CombinedCSV']
