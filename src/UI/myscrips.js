@@ -45,6 +45,7 @@ function validateForm() {
   x = document.getElementsByClassName("tab");
   y = x[currentTab].getElementsByTagName("input");
   // A loop that checks every input field in the current tab:
+  console.log(document.getElementsByName("5_o_clock_shadow")[0].checked);
   for (i = 0; i < y.length; i++) {
     // If a field is empty...
     if (y[i].value == "") {
