@@ -210,7 +210,7 @@
   margin: 0 1.81em 0 0;	
 }
 
-#Lipcontainter,#Haircontainter{
+#Lipcontainter,#Haircontainter,#Eyecontainer,#Nosesizecontainer{
 	border: none;
 	display: flex;
 	flex-direction: row;
