@@ -4,8 +4,24 @@ import json
 from tqdm import tqdm
 from PIL import Image
 
+def getAndReplaceList(data):
+    start = "<list>"
+    end = "</list>"
+
+    startIndex = data.index(start)
+    endIndex = data.index(end) + len(end)
+
+    innerFile = data[startIndex + len(start):data.index(end)].strip()
+
+    newf = open(innerFile)
+    innerData = newf.read().split()
+    newf.close()
+
+    return data.replace(data[startIndex:endIndex], str(innerData).replace("'", '"'))
+
 with open("config.json", "r") as f:
-    jsonFile = json.load(f)
+    data = f.read()
+    jsonFile = json.loads(getAndReplaceList(data))
     csvDetails = jsonFile['CSVDetails']
     dataset = jsonFile['ImageDetails']
     deleteRecords = jsonFile['DeleteRecords']
