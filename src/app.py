@@ -3,10 +3,13 @@ from flask.helpers import send_file
 from flask.wrappers import Request
 from flask import request
 from LoadModel import GeneratorModule
+from FaceRecognize import FaceIdentifier
 from datetime import datetime
+from flask import jsonify
 
 app = Flask(__name__) 
 gen = GeneratorModule()
+fi = FaceIdentifier()
 attrib_d = {}
 attributesList = gen.getAttributesOrder()
 
@@ -37,6 +40,31 @@ def get_image():
     filename = gen.getOutputImagePath()
     return send_file(filename, mimetype='image/png')
 
+@app.route('/refresh_dataset')
+def refresh_dataset():
+    global fi
+    fi = FaceIdentifier()
+    return "done"
+
+@app.route('/get_latest_details')
+def get_image_details():
+    print("API CALLED")
+
+    outputImagePath = gen.getOutputImagePath()
+
+    print("===>>", outputImagePath)
+
+    _id = fi.getFaceID(outputImagePath)
+    # _id = fi.getFaceID("P:\\GAN Learning\\Face_Generation\\src\\GeneratedImages\\test2.png")
+    
+    print("--->>", _id)
+
+    faceDetails = fi.getDetails(_id[0])
+
+    print("===>>", faceDetails)
+
+    return jsonify(faceDetails)
+    # return "Success"
 
 if __name__ == '__main__':
     app.run(debug=True,port=80)
