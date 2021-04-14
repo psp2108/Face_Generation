@@ -4,17 +4,21 @@ import cv2
 import face_recognition
 import numpy as np
 from time import sleep
+import json
 
 class FaceIdentifier():
     def __init__(self):
-        path = "Dummy Dataset\\imgs"
+        self.basePath = "Dummy Dataset"
+        self.imagesPath = os.path.join(self.basePath, "imgs")
+        self.detailsPath = os.path.join(self.basePath, "details")
+        self.testPath = os.path.join(self.basePath, "to test")
 
         self.encoded = {}
 
-        for dirpath, dnames, fnames in os.walk(path):
+        for dirpath, dnames, fnames in os.walk(self.imagesPath):
             for f in fnames:
                 if f.endswith(".jpg") or f.endswith(".png"):
-                    face = fr.load_image_file(os.path.join(path, f))
+                    face = fr.load_image_file(os.path.join(self.imagesPath, f))
                     encoding = fr.face_encodings(face)[0]
                     self.encoded[f.split(".")[0]] = encoding
         
@@ -44,11 +48,25 @@ class FaceIdentifier():
         
         return face_names
 
+    def getDetails(self, _id):      
+        jsonFileName = "{}.json"
+        jsonFilePath = os.path.join(self.detailsPath, jsonFileName).format(_id)
+
+        with open(jsonFilePath, "r") as f:
+            jsonObj = json.load(f)
+
+        return jsonObj
+
 if __name__ == "__main__":
     fi = FaceIdentifier()
 
-    temp = "P:\\GAN Learning\\face_rec\\test{}.png"
+    temp = "Dummy Dataset\\to test\\test{}.png"
     print("Loaded")
 
     for i in range(9):
         print(fi.getFaceID(temp.format(i)))
+        print("--")
+
+    input("Enter something")
+
+    print(fi.getDetails("1009"))
