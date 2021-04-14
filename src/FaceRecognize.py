@@ -60,7 +60,7 @@ class FaceIdentifier():
 if __name__ == "__main__":
     fi = FaceIdentifier()
 
-    temp = "Dummy Dataset\\to test\\test{}.png"
+    temp = "Dummy Dataset\\to test\\dummy-test{}.png"
     print("Loaded")
 
     for i in range(9):
