@@ -27,7 +27,7 @@
         "RandomVectorSize" : 7,
         "TotalAttributes" : 25,
         "Testing" : {
-            "Version" : "16700",
+            "Version" : "12660",
             "Attributes" : [0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0],
             "OutputImage" : "0704_001.png",
             "OutputFolder" : "GeneratedImages"
@@ -44,7 +44,7 @@
             "Wearing_Hat": [1]
         },
         {
-            "image_id": <list> ListOfImproperImages.txt </list>
+            "image_id": "<list> ListOfImproperImages.txt </list>"
         },
         {
             "Male": [0],

@@ -5,8 +5,8 @@ from tqdm import tqdm
 from PIL import Image
 
 def getAndReplaceList(data):
-    start = "<list>"
-    end = "</list>"
+    start = '"<list>'
+    end = '</list>"'
 
     startIndex = data.index(start)
     endIndex = data.index(end) + len(end)
