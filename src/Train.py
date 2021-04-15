@@ -124,7 +124,7 @@ decision = discriminator([features, gImage])
 print(decision)
 
 sampleStart = 0
-_, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2)
+sampleRealImages, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2, picsPath)
 sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
 
 for step in tqdm(range(iterationsFrom, iterations)):    
@@ -175,8 +175,9 @@ for step in tqdm(range(iterationsFrom, iterations)):
         log = 'Iterations: %d/%d, d_loss: %.4f,  a_loss: %.4f. ' % (step + 1, iterations, discriminatorLoss, adversaryLoss)
         print(log)
 
-        sampleRealImages, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2, picsPath)
-        sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
+        # Comment below 2 lines in case same image should be saved as a sample
+        # sampleRealImages, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2, picsPath)
+        # sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
         sampleStart = sampleStart + (controlSizeOfSampleImages**2)
         if sampleStart > stepLimit:
             sampleStart = 0
