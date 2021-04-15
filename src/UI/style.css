@@ -174,7 +174,7 @@
 	}
 		
 	 .toggle:checked + .lbl-toggle + .collapsible-content {
-		  max-height: 350px; } 
+		  max-height: 450px; } 
 		
 	 .toggle:checked+.lbl-toggle {
 		  border-bottom-right-radius: 0; 
@@ -210,7 +210,7 @@
   margin: 0 1.81em 0 0;	
 }
 
-#Lipcontainter,#Haircontainter,#Eyecontainer,#Nosesizecontainer{
+#Lipcontainter,#Haircontainter,#Eyecontainer,#Nosesizecontainer,#Agecontainer{
 	border: none;
 	display: flex;
 	flex-direction: row;
