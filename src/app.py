@@ -1,7 +1,7 @@
 from flask import Flask
 from flask.helpers import send_file
 from flask import request, render_template
-from LoadModel import GeneratorModule
+from LoadModel import GeneratorModule, gpuAvailable
 from FaceRecognize import FaceIdentifier
 from datetime import datetime
 from flask import jsonify
@@ -11,6 +11,10 @@ import subprocess
 app = Flask(__name__) 
 gen = GeneratorModule()
 fi = FaceIdentifier()
+if not gpuAvailable:
+    print("--> Loading faces for CPU")
+    fi.loadFaces()
+
 attrib_d = {}
 attributesList = gen.getAttributesOrder()
 
@@ -51,15 +55,19 @@ def get_image_details():
     outputImagePath = gen.getOutputImagePath()
     print("===>>", outputImagePath)
 
-    # MEMORY FULL ERROR CAN BE USED ON HIGHER END GPU(S) OR IF OTHER ALTERNATIVE IS POSSIBLE
-    # _id = fi.getFaceID(outputImagePath)
-    # print("--->>", _id)
-    # faceDetails = fi.getDetails(_id[0])
-
-    out = subprocess.Popen(['python', 'FaceRecognize.py', os.path.join(os.getcwd(), outputImagePath)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    _id0, _error = out.communicate()
-    print("--->>", _id0)
-    faceDetails = fi.getDetails(_id0.decode("utf-8").strip())
+    faceDetails = None
+    if gpuAvailable:
+        print(">>> Running on GPU")
+        out = subprocess.Popen(['python', 'FaceRecognize.py', os.path.join(os.getcwd(), outputImagePath)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        _id0, _error = out.communicate()
+        print("--->>", _id0)
+        faceDetails = fi.getDetails(_id0.decode("utf-8").strip())
+    else:     
+        # MEMORY FULL ERROR CAN BE USED ON HIGHER END GPU(S) OR IF OTHER ALTERNATIVE IS POSSIBLE
+        print(">>> Running on CPU")
+        _id = fi.getFaceID(outputImagePath)
+        print("--->>", _id)
+        faceDetails = fi.getDetails(_id[0])
 
     print("===>>", faceDetails)
 
