@@ -1,6 +1,6 @@
 from flask import Flask
 from flask.helpers import send_file
-from flask import request
+from flask import request, render_template
 from LoadModel import GeneratorModule
 from FaceRecognize import FaceIdentifier
 from datetime import datetime
@@ -22,7 +22,7 @@ for i in range(7):
 
 @app.route('/')
 def home():
-    return "FIGSI"
+    return render_template("index.html", project_title="FIGSI")
 
 @app.route('/get_image')
 def get_image():
