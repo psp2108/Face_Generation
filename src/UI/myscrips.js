@@ -39,6 +39,8 @@ function nextPrev(n) {
   showTab(currentTab);
 }
 
+
+
 function validateForm() {
     var arr1 = [
     '5_o_clock_shadow', 'bags_under_eyes', 'big_lips', 'big_nose', 'chubby', 'double_chin', 'goatee', 
@@ -51,16 +53,26 @@ function validateForm() {
     'rv0=0.643303300', 'rv1=0.956696700', 'rv2=0.643303300', 'rv3=0.643303300', 'rv4=0.643303300', 'rv5=0.643303300', 'rv6=0.1356696700'
 ]
 
+  var exception_array = [
+    "hair_size","hair_color","combine_eyebrow","male"
+  ]
+
   for(var i=0; i<arr1.length; i++){
     temp = document.getElementById(arr1[i]);
     if (temp){
-      if (temp.checked){
-        arr1[i] += ("=" + 1);
+      if (exception_array.includes(arr1[i])){
+        arr1[i]+= ("="+handle_exception(arr1[i]));
       }
       else{
-        arr1[i] += ("=" + 0);
-      }    
-      console.log(arr1[i]);
+        if (temp.checked){
+          arr1[i] += ("=" + 1);
+        }
+        else{
+          arr1[i] += ("=" + 0);
+        }    
+        //console.log(arr1[i]);
+      }
+      
     }
     else{
       arr1[i] += ("=" + 0);
@@ -83,4 +95,51 @@ function fixStepIndicator(n) {
   }
   //... and adds the "active" class on the current step:
   x[n].className += " active";
+}
+
+
+function handle_exception(excep) {
+  console.log("FN CALLED");
+  selection = document.getElementsByName(excep);
+  console.log(selection.length);
+  switch (excep) {
+    case "hair_size":
+      if(document.getElementById("hair_size").checked)
+      return 1;
+      else if(document.getElementById("hair_size_medium").checked)
+      return 0.5;
+      else
+      return 0;
+      break;
+    
+    case "hair_color":
+      if(document.getElementById("hair_color").checked)
+      return 1;
+      else if(document.getElementById("hair_color_gray").checked)
+      return 0.25;
+      else if(document.getElementById("hair_color_brown").checked)
+      return 0.75;
+      else
+      return 0.5;
+      break;
+
+    case "combine_eyebrow":
+      if(document.getElementById("combine_eyebrow").checked && document.getElementById("bushy_eyebrow").checked)
+        return 0.5;
+      else if(document.getElementById("combine_eyebrow").checked && document.getElementById("bushy_eyebrow").checked===false)
+        return 0;
+      else
+        return 1;
+      break;
+    default:
+      return 0;
+
+    case "male":
+      return document.getElementById("male").value;
+  }
+}
+
+
+function chng_gender(val){
+  document.getElementById("male").value = val;
 }

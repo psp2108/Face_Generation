@@ -24,7 +24,8 @@
 		color: rgba(112,112,112,1);
 	}
 	#feature_text{
-		padding-left: 5%;
+		padding-left: 0;
+		text-align: center;
 	}
 	
 	#GENDER {
@@ -417,4 +418,13 @@
 	height: 8px;
 	border-radius: 50%;
 	background: white;
+}
+
+.prv_img {
+	display: block;
+	margin-left: 0;
+	margin-right: auto;
+	margin-top: 20%;
+	margin-bottom: auto;
+	width: 80%;
 }

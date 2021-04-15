@@ -13,17 +13,17 @@
 <body>
 	<!-- Feature Selection Division -->
 	<div class="FEATURE_SELECTION">
-		<p id="feature_text">FEATURE SELECTION</p>
+		<p id="feature_text">Facial Sketch Generation For Suspect Identification</p>
 	  </div>
 <!-- Feature Selection Devision Ends here -->
 
 <!-- Gender Buttons Division -->
 	<div id="GENDER" class= "workframe">
-		<span id="gender_text">GENDER</span>
+		<span>GENDER</span>
 		<div class="col-lg-12 mb-12">
 			<div class="bg-white p-4 rounded shadow-sm h-100" id="myDIV">
-			<button class="btn btn-primary btn-circle btn-circle-xl active" id="male"></button>
-			<button class="btn btn-info btn-circle btn-circle-xl m-1" id="female"></button>
+			<button class="btn btn-primary btn-circle btn-circle-xl active" id="male" value="1" onclick="chng_gender(1)"></button>
+			<button class="btn btn-info btn-circle btn-circle-xl m-1" id="female" value="0" onclick="chng_gender(0)"></button>
 			</div>
 		  </div> 
 	</div>
@@ -63,13 +63,13 @@
 							<div id="eyebrowfeaturecontainer" name="eybrowfeaturecontainer">
 								<div id="fulltype">
 									<label class="container">Arched Eyebrows
-									  <input type="checkbox" name="combine_eyebrow" id="Arched_Eyebrows">
+									  <input type="checkbox" name="combine_eyebrow" id="combine_eyebrow">
 									  <span class="checkmark"></span>
 									</label>
 								  </div>
 								  <div id="fulltype">
 									<label class="container">Bushy Eyebrows
-									  <input type="checkbox" name="combine_eyebrow" id="Bushy_Eyebrows">
+									  <input type="checkbox" name="combine_eyebrow" id="bushy_eyebrow">
 									  <span class="checkmark"></span>
 									</label>
 								  </div>
@@ -422,7 +422,7 @@
 
 <!-- image preview Division -->
 	<div id="image_screen" class= "workframe">
-		<img src="female.svg" id="preview_img">
+		<img src="man.svg" id="preview_img" class="prv_img">
 	</div>
 	<script src="myscrips.js"></script>          
 </body>
