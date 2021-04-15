@@ -43,8 +43,7 @@ def get_image():
 
 @app.route('/refresh_dataset')
 def refresh_dataset():
-    global fi
-    fi = FaceIdentifier()
+    fi.loadFaces()
     return "done"
 
 @app.route('/get_latest_details')

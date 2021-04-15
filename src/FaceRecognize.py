@@ -18,6 +18,7 @@ class FaceIdentifier():
         self.known_faces = []
         self.known_names = []
 
+    def loadFaces(self):
         for name in os.listdir(self.imagesPath):
             for fileName in os.listdir(os.path.join(self.imagesPath, name)):
                 image = face_recognition.load_image_file(os.path.join(self.imagesPath, name, fileName))
@@ -61,11 +62,13 @@ class FaceIdentifier():
 
 if __name__ == "__main__":
     fi = FaceIdentifier()
+    fi.loadFaces()
 
     if len(sys.argv) > 1:
-        path = sys.argv[1]
+        paths = sys.argv[1:]
 
-        print(fi.getFaceID(path)[0])
+        for path in paths:
+            print(fi.getFaceID(path)[0])
     else:
         temp = "Dummy Dataset\\to test\\dummy-test{}.png"
         print("Loaded")
