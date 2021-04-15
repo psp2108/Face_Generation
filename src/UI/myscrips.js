@@ -1,5 +1,6 @@
 var currentTab = 0; // Current tab is set to be the first tab (0)
 showTab(currentTab); // Display the current tab
+var api = "http://127.0.0.1/";
 
 function showTab(n) {
   // This function will display the specified tab of the form...
@@ -83,8 +84,8 @@ function validateForm() {
   var all_attribs = arr1.join('&') + "&" + arr2.join('&');
 
   console.log(all_attribs);
-  document.getElementById('preview_img').src="http://127.0.0.1/get_image?" + all_attribs;
-
+  document.getElementById('preview_img').src= api + "get_image?" + all_attribs;
+  document.getElementById('prv_img_get_id').style.visibility="visible";
 }
 
 function fixStepIndicator(n) {
@@ -142,4 +143,9 @@ function handle_exception(excep) {
 
 function chng_gender(val){
   document.getElementById("male").value = val;
+  document.getElementById("male").style.background = "url('test.png')";
+}
+
+function getapi(){
+  document.getElementById("id_href").href = api + "get_latest_details";
 }

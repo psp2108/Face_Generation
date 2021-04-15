@@ -428,3 +428,13 @@
 	margin-bottom: auto;
 	width: 80%;
 }
+
+#prv_img_get_id {
+	visibility: hidden; 
+	padding-left: 30%;
+	font-size:x-large;
+}
+
+a:link, a:visited,a:hover, a:active {
+	color: red;
+}
