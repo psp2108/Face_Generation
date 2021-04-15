@@ -4,6 +4,7 @@ import face_recognition
 import numpy as np
 from time import sleep
 import json
+import sys
 
 class FaceIdentifier():
     def __init__(self):
@@ -12,7 +13,7 @@ class FaceIdentifier():
         self.detailsPath = os.path.join(self.basePath, "details")
         self.testPath = os.path.join(self.basePath, "to test")
         self.tolerance = 0.6
-        self.model = "hog" # or "cnn"
+        self.model = "cnn" # "hog" or "cnn"
 
         self.known_faces = []
         self.known_names = []
@@ -61,13 +62,18 @@ class FaceIdentifier():
 if __name__ == "__main__":
     fi = FaceIdentifier()
 
-    temp = "Dummy Dataset\\to test\\dummy-test{}.png"
-    print("Loaded")
+    if len(sys.argv) > 1:
+        path = sys.argv[1]
 
-    for i in range(9):
-        print(fi.getFaceID(temp.format(i)))
-        print("--")
+        print(fi.getFaceID(path)[0])
+    else:
+        temp = "Dummy Dataset\\to test\\dummy-test{}.png"
+        print("Loaded")
 
-    input("Enter something")
+        for i in range(9):
+            print(fi.getFaceID(temp.format(i)))
+            print("--")
 
-    print(fi.getDetails("1009"))
+        input("Enter something")
+
+        print(fi.getDetails("1009"))

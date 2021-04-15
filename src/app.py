@@ -1,11 +1,12 @@
 from flask import Flask
 from flask.helpers import send_file
-from flask.wrappers import Request
 from flask import request
 from LoadModel import GeneratorModule
 from FaceRecognize import FaceIdentifier
 from datetime import datetime
 from flask import jsonify
+import os
+import subprocess
 
 app = Flask(__name__) 
 gen = GeneratorModule()
@@ -48,23 +49,22 @@ def refresh_dataset():
 
 @app.route('/get_latest_details')
 def get_image_details():
-    print("API CALLED")
-
     outputImagePath = gen.getOutputImagePath()
-
     print("===>>", outputImagePath)
 
-    _id = fi.getFaceID(outputImagePath)
-    # _id = fi.getFaceID("P:\\GAN Learning\\Face_Generation\\src\\GeneratedImages\\test2.png")
-    
-    print("--->>", _id)
+    # MEMORY FULL ERROR CAN BE USED ON HIGHER END GPU(S) OR IF OTHER ALTERNATIVE IS POSSIBLE
+    # _id = fi.getFaceID(outputImagePath)
+    # print("--->>", _id)
+    # faceDetails = fi.getDetails(_id[0])
 
-    faceDetails = fi.getDetails(_id[0])
+    out = subprocess.Popen(['python', 'FaceRecognize.py', os.path.join(os.getcwd(), outputImagePath)], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    _id0, _error = out.communicate()
+    print("--->>", _id0)
+    faceDetails = fi.getDetails(_id0.decode("utf-8").strip())
 
     print("===>>", faceDetails)
 
     return jsonify(faceDetails)
-    # return "Success"
 
 if __name__ == '__main__':
     app.run(debug=False,port=80)
