@@ -81,7 +81,7 @@ function validateForm() {
     }
   }
 
-  var all_attribs = arr1.join('&')
+  var all_attribs = arr1.join('&') + "&" + arr2.join('&');
 
   console.log(all_attribs);
   document.getElementById('preview_img').src= api + "get_image?" + all_attribs;
