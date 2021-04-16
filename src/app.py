@@ -41,12 +41,18 @@ def get_image():
     global attrib_d
     new_d = dict(attrib_d)
 
-    for i in new_d.keys():
-        new_d[i] = float(request.args.get(i))
+    randV = None
+
+    try:
+        for i in new_d.keys():
+            new_d[i] = float(request.args.get(i))
+        randV = new_d
+    except:
+        pass
 
     print("APT hit at ", datetime.now().strftime("%d %B, %Y (%H:%M:%S)"))
     # gen.getImage(new_d, randomVector=[-0.39174175, 0.39174175, -0.39174175, -0.39174175, -0.39174175, -0.39174175, 1.39174175 ], autoSave = True, imageName = "test_fromflask")
-    gen.getImage(new_d, randomVector=new_d, autoSave = True, imageName = "test_fromflask")
+    gen.getImage(new_d, randomVector=randV, autoSave = True, imageName = "test_fromflask")
     # gen.getImage(new_d, autoSave = True, imageName = "test_fromflask")
   
     filename = gen.getOutputImagePath()
