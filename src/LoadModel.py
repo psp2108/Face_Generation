@@ -3,17 +3,19 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 from matplotlib import pyplot as plt
 import tensorflow as tf 
-
+gpuAvailable = True
 # To resolve GEMM error
 try:
     physical_devices = tf.config.list_physical_devices('GPU') 
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
 except:
     print("No GPU found. Using CPU...")
+    gpuAvailable = False
 
 from tensorflow import keras
 from PIL import Image
 import numpy as np
+import Generator
 
 import json
 
@@ -106,7 +108,9 @@ class GeneratorModule():
         self.modelPath = path
 
     def loadGenerator(self):
-        self.generator = keras.models.load_model(self.modelPath.format(self.modelVersion))
+        self.generator = Generator.getGeneratorModel()
+        self.generator.load_weights((self.modelPath.format(self.modelVersion)))
+        
         print("GENERATOR LOADED")
 
     def saveImage(self, imageName = None):
