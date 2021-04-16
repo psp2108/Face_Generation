@@ -22,12 +22,12 @@
         "TrainedModel" : "Trained models 1",
         "SampleOutputs" : "Sample Outputs",
         "ModelDiagrams" : "Model diagrams",
-        "ModelRootFolder" : "test_0904_001",
+        "ModelRootFolder" : "test_0704_001",
         "CodeCopy": "Code-Copy",
         "RandomVectorSize" : 7,
         "TotalAttributes" : 25,
         "Testing" : {
-            "Version" : "12660",
+            "Version" : "22850",
             "Attributes" : [0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0],
             "OutputImage" : "test2.png",
             "OutputFolder" : "GeneratedImages"

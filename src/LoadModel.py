@@ -15,6 +15,7 @@ except:
 from tensorflow import keras
 from PIL import Image
 import numpy as np
+import Generator
 
 import json
 
@@ -107,7 +108,9 @@ class GeneratorModule():
         self.modelPath = path
 
     def loadGenerator(self):
-        self.generator = keras.models.load_model(self.modelPath.format(self.modelVersion))
+        self.generator = Generator.getGeneratorModel()
+        self.generator.load_weights((self.modelPath.format(self.modelVersion)))
+        
         print("GENERATOR LOADED")
 
     def saveImage(self, imageName = None):

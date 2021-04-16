@@ -87,11 +87,12 @@ marginBetweenFakeReal = 50
 
 controlSizeOfSampleImages = 6
 
+gan, generator, discriminator = getGanModel()
+
 if os.path.isdir(modelCopy):
-    # Problem in loading (But saving in perfect, problem occurs which continuining to train the model again)
-    gan = keras.models.load_model(os.path.join(modelCopy, 'gan_latest.h5'))
-    generator = keras.models.load_model(os.path.join(modelCopy, 'generator_latest.h5'))
-    discriminator = keras.models.load_model(os.path.join(modelCopy, 'discriminator_latest.h5'))
+    gan.load_weights(os.path.join(modelCopy, 'gan_latest.h5'))
+    generator.load_weights(os.path.join(modelCopy, 'generator_latest.h5'))
+    discriminator.load_weights(os.path.join(modelCopy, 'discriminator_latest.h5'))
 
     with open(modelLog, 'r') as f:
         lastLine = f.read().splitlines()[-1]
@@ -106,13 +107,12 @@ else:
     os.makedirs(modelCopy)
     os.makedirs(sampleOutput)
     os.makedirs(codeCopy)
-    gan, generator, discriminator = getGanModel()
 
     modelLogFile = open(modelLog, "w")
     modelLogFile.writelines("Iterations, Discriminator Loss, Adversary Loss, Image number, Loop\n")
     modelLogFile.close()
 
-copyCode(codeCopy)
+    copyCode(codeCopy)
 
 # Test Generator image
 features = tf.random.normal(shape=[1, featuresLength])
@@ -124,8 +124,9 @@ decision = discriminator([features, gImage])
 print(decision)
 
 sampleStart = 0
-_, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2)
+sampleRealImages, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2, picsPath)
 sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
+sameSamples = False
 
 for step in tqdm(range(iterationsFrom, iterations)):    
     # Fetching the images and their attributes from Hard drive
@@ -158,14 +159,14 @@ for step in tqdm(range(iterationsFrom, iterations)):
     adversaryLoss = gan.train_on_batch([randomVector, attributes], misleadingTargets)
         
     if step % saveModelInterval == saveModelInterval - 1:
-        gan.save(os.path.join(modelCopy, 'gan_'+ str(step + 1) +'.h5'))
-        generator.save(os.path.join(modelCopy, 'generator_'+ str(step + 1) +'.h5'))
-        discriminator.save(os.path.join(modelCopy, 'discriminator_'+ str(step + 1) +'.h5'))
+        gan.save_weights(os.path.join(modelCopy, 'gan_'+ str(step + 1) +'.h5'))
+        generator.save_weights(os.path.join(modelCopy, 'generator_'+ str(step + 1) +'.h5'))
+        discriminator.save_weights(os.path.join(modelCopy, 'discriminator_'+ str(step + 1) +'.h5'))
 
         # Preserve latest copy for easy access
-        gan.save(os.path.join(modelCopy, 'gan_latest.h5'))
-        generator.save(os.path.join(modelCopy, 'generator_latest.h5'))
-        discriminator.save(os.path.join(modelCopy, 'discriminator_latest.h5'))
+        gan.save_weights(os.path.join(modelCopy, 'gan_latest.h5'))
+        generator.save_weights(os.path.join(modelCopy, 'generator_latest.h5'))
+        discriminator.save_weights(os.path.join(modelCopy, 'discriminator_latest.h5'))
 
         modelLogFile = open(modelLog, "a")
         modelLogFile.writelines("%d, %f, %f, %d, %d\n" % (step + 1, discriminatorLoss, adversaryLoss, start, loop))
@@ -175,8 +176,10 @@ for step in tqdm(range(iterationsFrom, iterations)):
         log = 'Iterations: %d/%d, d_loss: %.4f,  a_loss: %.4f. ' % (step + 1, iterations, discriminatorLoss, adversaryLoss)
         print(log)
 
-        sampleRealImages, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2, picsPath)
-        sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
+        if not sameSamples: # Generates different set of samples every time
+            sampleRealImages, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2, picsPath)
+            sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
+
         sampleStart = sampleStart + (controlSizeOfSampleImages**2)
         if sampleStart > stepLimit:
             sampleStart = 0
