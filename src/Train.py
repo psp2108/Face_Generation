@@ -126,6 +126,7 @@ print(decision)
 sampleStart = 0
 sampleRealImages, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2, picsPath)
 sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
+sameSamples = False
 
 for step in tqdm(range(iterationsFrom, iterations)):    
     # Fetching the images and their attributes from Hard drive
@@ -175,9 +176,10 @@ for step in tqdm(range(iterationsFrom, iterations)):
         log = 'Iterations: %d/%d, d_loss: %.4f,  a_loss: %.4f. ' % (step + 1, iterations, discriminatorLoss, adversaryLoss)
         print(log)
 
-        # Comment below 2 lines in case same image should be saved as a sample
-        sampleRealImages, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2, picsPath)
-        sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
+        if not sameSamples: # Generates different set of samples every time
+            sampleRealImages, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2, picsPath)
+            sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
+
         sampleStart = sampleStart + (controlSizeOfSampleImages**2)
         if sampleStart > stepLimit:
             sampleStart = 0
