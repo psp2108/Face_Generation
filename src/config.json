@@ -27,7 +27,7 @@
         "RandomVectorSize" : 7,
         "TotalAttributes" : 25,
         "Testing" : {
-            "Version" : "",
+            "Version" : "22850",
             "Attributes" : [0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,1.0,0.0],
             "OutputImage" : "test2.png",
             "OutputFolder" : "GeneratedImages"
