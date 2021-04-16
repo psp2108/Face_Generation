@@ -51,7 +51,7 @@ function validateForm() {
   ]
 
   var arr2 = [
-    'rv0=0.643303300', 'rv1=0.956696700', 'rv2=0.643303300', 'rv3=0.643303300', 'rv4=0.643303300', 'rv5=0.643303300', 'rv6=0.1356696700'
+    'rv0', 'rv1', 'rv2', 'rv3', 'rv4', 'rv5', 'rv6'
 ]
 
   var exception_array = [
@@ -81,6 +81,11 @@ function validateForm() {
     }
   }
 
+
+  for(var i=0; i<arr2.length; i++){
+    arr2[i] += ("=" + document.getElementById(arr2[i]).value);
+}
+
   var all_attribs = arr1.join('&') + "&" + arr2.join('&');
 
   console.log(all_attribs);
@@ -100,9 +105,9 @@ function fixStepIndicator(n) {
 
 
 function handle_exception(excep) {
-  console.log("FN CALLED");
+
   selection = document.getElementsByName(excep);
-  console.log(selection.length);
+
   switch (excep) {
     case "hair_size":
       if(document.getElementById("hair_size").checked)
