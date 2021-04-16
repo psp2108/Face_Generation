@@ -17,15 +17,23 @@
 
 	/* Feature Selection CSS */
 	.FEATURE_SELECTION {
+		
 		font-family: Segoe UI;
 		font-style: normal;
 		font-weight: normal;
 		font-size: 40px;
 		color: rgba(112,112,112,1);
+		position:fixed;
+		z-index: 2;
+		opacity: 100%;
+		
+		
 	}
 	#feature_text{
-		padding-left: 0;
+		width: 100%;
 		text-align: center;
+		position:fixed;
+		background-color: white;
 	}
 	
 	#GENDER {
@@ -54,6 +62,7 @@
 		background-size: cover;
 		height: 100%;
 		border: 1px solid #3f3a3e;
+		position: fixed;
 	}
 
 	/* main Criteria CSS(Categories) */
