@@ -99,7 +99,7 @@
 	}
 	
 	#male{
-		background: url(man.svg) no-repeat top left;
+		background: url(male.png) no-repeat top left;
 		background-size: contain;
 		cursor: pointer;
 		/* display: inline-block; */
@@ -108,7 +108,7 @@
 	}
 
 	#female{
-		background: url(female.svg) no-repeat top left;
+		background: url(female.png) no-repeat top left;
 		background-size: contain;
 		cursor: pointer;
 		/* display: inline-block; */

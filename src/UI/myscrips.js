@@ -143,7 +143,17 @@ function handle_exception(excep) {
 
 function chng_gender(val){
   document.getElementById("male").value = val;
-  document.getElementById("male").style.background = "url('test.png')";
+  if(val){
+    
+    document.getElementById("female").style.backgroundImage = "url('female.png')";
+    document.getElementById("male").style.backgroundImage = "url('bluemale.png')";
+  }
+  else{
+    document.getElementById("female").style.backgroundImage = "url('bluefemale.png')";
+    document.getElementById("male").style.backgroundImage = "url('male.png')";
+  }
+  
+  
 }
 
 function getapi(){
