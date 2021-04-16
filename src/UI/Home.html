@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<!-- <html> -->
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+<title>Home</title>
+</head>
+<body>
+	<!-- Feature Selection Division -->
+	<div class="FEATURE_SELECTION">
+		<p id="feature_text">Facial Sketch Generation For Suspect Identification</p>
+	  </div>
+<!-- Feature Selection Devision Ends here -->
+
+<!-- Gender Buttons Division -->
+	<div id="GENDER" class= "workframe">
+		<span>GENDER</span>
+		<div class="col-lg-12 mb-12">
+			<div class="bg-white p-4 rounded shadow-sm h-100" id="myDIV">
+			<button class="btn btn-primary btn-circle btn-circle-xl active" id="male" value="1" onclick="chng_gender(1)"></button>
+			<button class="btn btn-info btn-circle btn-circle-xl m-1" id="female" value="0" onclick="chng_gender(0)"></button>
+			</div>
+		  </div> 
+	</div>
+<!-- Gender Division ends here -->
+
+<!-- Main Criteria Starts here -->
+	<div id="selections"  class= "workframe">
+		<form id="regForm" action="/action_page.php">
+			<!-- one tab start -->
+		<div class="tab"> 
+		<div id="EYES" class="criteria">
+			<span>EYES</span>
+		</div>
+		<div class="wrap-1">
+		<input id="tab-1" class="toggle" type="checkbox"> 
+		<label for="tab-1" class="lbl-toggle">Type of Eyes</label>
+			<div class="collapsible-content">
+				<div class="content-inner">
+					<div class="content">
+						<p class="labelish">Shape of Eyes:</p>
+							<div id="Eyecontainer" name="Eyecontainer" >
+							
+								<div id="narroweyes" class="floatBlock">
+									<label for="narrow_eyes" class="radiotype"> <input id="narrow_eyes" name="narrow_eyes" type="radio" value="Narrow_Eyes" />  Narrow Eyes  
+									<span class="check"></span>
+								</label>
+								</div>
+				
+								<div id="B_no" class="floatBlock">
+									<label for="wide_eyes" class="radiotype"> <input id="wide_eyes" name="narrow_eyes" type="radio" value="Wide_Eyes" /> Wide Eyes 
+									<span class="check"></span>
+								</label>
+								</div>
+							</div>
+
+							<p class="labelish">Eyebrow Type:</p>	
+							<div id="eyebrowfeaturecontainer" name="eybrowfeaturecontainer">
+								<div id="fulltype">
+									<label class="container">Arched Eyebrows
+									  <input type="checkbox" name="combine_eyebrow" id="combine_eyebrow">
+									  <span class="checkmark"></span>
+									</label>
+								  </div>
+								  <div id="fulltype">
+									<label class="container">Bushy Eyebrows
+									  <input type="checkbox" name="combine_eyebrow" id="bushy_eyebrow">
+									  <span class="checkmark"></span>
+									</label>
+								  </div>
+								
+							 </div>
+						   
+							<p class="labelish">Eye Feature:</p>	
+							<div id="eyefeaturecontainer" name="eyefeaturecontainer"class="Options" >
+								<div id="fulltype">
+									<label class="container">Bags Under the Eyes
+									  <input type="checkbox" name="bags_under_eyes" id="bags_under_eyes">
+									  <span class="checkmark"></span>
+									</label>
+								  </div>
+								
+							 </div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="NOSE" class="criteria">
+			<span>NOSE
+			</span>
+		</div>
+		<div class="wrap-2">
+		<input id="tab-2" class="toggle" type="checkbox"> 
+		<label for="tab-2" class="lbl-toggle">Type of Nose</label>
+			<div class="collapsible-content">
+				<div class="content-inner">
+					<div class="content">
+						<p class="labelish">Size of Nose:</p>
+							<div id="Nosesizecontainer" name="Nosesizecontainer" >
+							
+								<div id="bigsize" class="floatBlock">
+									<label for="big_nose" class="radiotype"> <input id="big_nose" name="big_nose" type="radio" value="Big_Nose" />  Big Nose
+									<span class="check"></span>
+								</label>
+								</div>
+				
+								<div id="smallsize" class="floatBlock">
+									<label for="small_nose" class="radiotype"> <input id="small_nose" name="big_nose" type="radio" value="Small_Nose" /> Small Nose 
+									<span class="check"></span>
+								</label>
+								</div>
+							</div>	  
+
+							<p class="labelish">Shape of Nose:</p>	
+							<div id="NoseShape" name="NoseShape"class="Options" >
+									
+								<div id="pointynose" class="floatBlock">
+									<label for="pointy_nose" class="radiotype"> <input id="pointy_nose" name="pointy_nose" type="radio" value="Pointy_Nose" />  Pointy Nose 
+										<span class="check"></span>
+									
+									</label>
+								</div>
+				
+								<div id="bluntnose" class="floatBlock">
+									<label for="blunt_nose" class="radiotype"> <input id="blunt_nose" name="pointy_nose" type="radio" value="Blunt_Nose" /> Blunt Nose 
+										<span class="check"></span>
+									
+									</label>
+								</div>
+							 </div>
+						   
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="MOUTH" class="criteria">
+			<span>MOUTH
+			</span>
+		</div>
+		<div class="wrap-3"> 
+		<input id="tab-3" class="toggle" type="checkbox"> 
+		<label for="tab-3" class="lbl-toggle">Type of MOUTH</label>
+			<div class="collapsible-content">
+				<div class="content-inner">
+					<div class="content">
+						<p class="labelish">Size of Lips:</p>
+								    <div id="Lipcontainter" name="lipcontainter" >
+									
+									   <div id="biglipsize" class="floatBlock">
+										   <label for="big_lips" class="radiotype"> <input id="big_lips" name="big_lips" type="radio" value="Big_Lips" />  Big Lips  
+											<span class="check"></span>
+										</label>
+									   </div>
+					   
+									   <div id="smalllipsize" class="floatBlock">
+										   <label for="thin_lips" class="radiotype"> <input id="thin_lips" name="big_lips" type="radio" value="Thin_lips" /> Thin Lips 
+											<span class="check"></span>
+										</label>
+									   </div>
+									</div>
+							<p class="labelish">Lips Feature:</p>	
+							<div id="smilecontainer" name="smilecontainer"class="Options" >
+									
+								<div id="smillinglips" class="floatBlock">
+									<label for="smiling" class="radiotype"> <input id="smiling" name="smiling" type="radio" value="Smiling" />  Smiling 
+										<span class="check"></span>
+									
+									</label>
+								</div>
+				
+								<div id="notsmilinglips" class="floatBlock">
+									<label for="not_smiling" class="radiotype"> <input id="not_smiling" name="smiling" type="radio" value="Not_Smiling" /> Not Smiling 
+										<span class="check"></span>
+									
+									</label>
+								</div>
+							 </div>
+						 </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- one tab end -->
+	
+			<!-- one tab start -->
+			<div class="tab" style="display: none;">
+			<div id="HAIR" class="criteria">
+				<span>HAIR
+				</span>
+			</div>
+			<div class="wrap-4"> 
+			<input id="tab-4" class="toggle" type="checkbox"> 
+			<label for="tab-4" class="lbl-toggle">Type of HAIR</label>
+				<div class="collapsible-content">
+					<div class="content-inner">
+						<div class="content">
+							<p class="labelish">Hair Growth Type:</p>
+							<div id="Haircontainter" name="Haircontainter" >
+									
+								<div id="fulltype" class="floatBlock">
+									<label for="hair_size" class="radiotype"> <input id="hair_size" name="hair_size" type="radio" value="Full" />  Full 
+										<span class="check"></span>
+									</label>
+								</div>
+
+								<div id="mediumtype" class="floatBlock">
+									<label for="hair_size_medium" class="radiotype"> <input id="hair_size_medium" name="hair_size" type="radio" value="Medium" />  Medium 
+										<span class="check"></span>
+									</label>
+								</div>
+				
+								<div id="baldtype" class="floatBlock">
+									<label for="hair_size_bald" class="radiotype"> <input id="hair_size_bald" name="hair_size" type="radio" value="Bald" /> Bald
+										<span class="check"></span>
+									</label>
+								</div>
+							 </div>
+								<p class="labelish">Hair Type:</p>	
+								<div id="hairtypecontainer" name="hairtypecontainer"class="Options1" >
+										
+									<div id="straight_type" class="floatBlock">
+										<label for="straight_hair" class="radiotype"> <input id="straight_hair" name="straight_hair" type="radio" value="Straight" />  Straight Hair 
+											<span class="check"></span>
+										</label>
+									</div>
+									<div id="curly_type" class="floatBlock">
+										<label for="wavy_hair" class="radiotype"> <input id="wavy_hair" name="straight_hair" type="radio" value="Curly" /> Curly Hair 
+											<span class="check"></span>
+										</label>
+									</div>
+								 </div>
+
+								 <p class="labelish">Hair Color:</p>	
+								<div id="haircolorcontainer" name="haircolorcontainer"class="Options" >
+										
+									<div id="black_color" class="floatBlock">
+										<label for="hair_color" class="radiotype"> <input id="hair_color" name="hair_color" type="radio" value="Black" />  Black
+											<span class="check"></span>
+										</label>
+									</div>
+									<div id="gray_color" class="floatBlock">
+										<label for="hair_color_gray" class="radiotype"> <input id="hair_color_gray" name="hair_color" type="radio" value="Gray" />  Gray
+											<span class="check"></span>
+										</label>
+									</div>
+									<div id="brown_color" class="floatBlock">
+										<label for="hair_color_brown" class="radiotype"> <input id="hair_color_brown" name="hair_color" type="radio" value="Brown" /> Brown 
+											<span class="check"></span>
+										</label>
+									</div>
+									<div id="blonde_color" class="floatBlock">
+										<label for="hair_color_blonde" class="radiotype"> <input id="hair_color_blonde" name="hair_color" type="radio" value="blonde" /> Blonde
+											<span class="check"></span>
+										</label>
+									</div>
+								 </div>
+
+							 </div>
+							 
+					</div>
+				</div>
+			</div>
+		
+			<div id="SKIN" class="criteria">
+				<span>SKIN
+				</span>
+			</div>
+			<div class="wrap-5"> 
+			<input id="tab-5" class="toggle" type="checkbox"> 
+			<label for="tab-5" class="lbl-toggle">SKIN TYPES </label>
+				<div class="collapsible-content">
+					<div class="content-inner">
+						<div class="content">
+							<p class="labelish">Age:</p>
+							<div id="Agecontainer" name="Agecontainer" >
+							
+								<div id="youngtype" class="floatBlock">
+									<label for="young" class="radiotype"> <input id="young" name="young" type="radio" value="Young" />  Young
+									<span class="check"></span>
+								</label>
+								</div>
+				
+								<div id="oldtype" class="floatBlock">
+									<label for="old" class="radiotype"> <input id="old" name="young" type="radio" value="Old" /> Old
+									<span class="check"></span>
+								</label>
+								</div>
+							</div>	 
+							<p class="labelish">Skin Features:</p>
+							<div id="skincontainter" name="skincontainter">
+					
+							  <div id="fulltype">
+								<label class="container">Pale Skin
+								  <input type="checkbox" name="pale_skin" id="pale_skin">
+								  <span class="checkmark"></span>
+								</label>
+							  </div>
+							  <div id="fulltype">
+								<label class="container">Oval Face
+								  <input type="checkbox" name="oval_face" id="oval_face">
+								  <span class="checkmark"></span>
+								</label>
+							  </div>
+							  <div id="fulltype">
+								<label class="container">Double Chin
+								  <input type="checkbox" name="double_chin" id="double_chin">
+								  <span class="checkmark"></span>
+								</label>
+							  </div>
+							  <div id="fulltype">
+								<label class="container">Chubby
+								  <input type="checkbox" name="chubby" id="chubby">
+								  <span class="checkmark"></span>
+								</label>
+							  </div>
+							  <div id="fulltype">
+								<label class="container">High Cheekbones
+								  <input type="checkbox" name="high_cheekbones" id="high_cheekbones">
+								  <span class="checkmark"></span>
+								</label>
+							  </div>
+							</div>
+					
+							<p class="labelish">MakeUp:</p>
+							<div id="haircolorcontainer" name="haircolorcontainer" class="Options">
+					
+							  <div id="nomk" class="floatBlock">
+								<label for="heavy_makeup" class="radiotype">No MakeUp <input id="heavy_makeup" name="heavy_makeup" type="radio" value="No_MakeUp" />
+								  <span class="check"></span>
+								</label>
+							  </div>
+							  <div id="rosymk" class="floatBlock">
+								<label for="rosy_cheeks" class="radiotype">Rosy Cheeks <input id="rosy_cheeks" name="heavy_makeup" type="radio" value="Rosy_cheeks" />
+								  <span class="check"></span>
+								</label>
+							  </div>
+							  <div id="heavymk" class="floatBlock">
+								<label for="heavy_makeup_no" class="radiotype">Heavy MakeUp <input id="heavy_makeup_no" name="heavy_makeup" type="radio" value="Heavy_makeup" />
+								  <span class="check"></span>
+								</label>
+							  </div>
+							</div>
+					
+						  </div>
+							 
+					</div>
+				</div>
+			</div>
+				<div id="FACIAL_HAIR" class="criteria">
+					<span>FACIAL HAIR
+					</span>
+				</div>
+				<div class="wrap-6"> 
+				<input id="tab-6" class="toggle" type="checkbox"> 
+				<label for="tab-6" class="lbl-toggle">Facial Hair Types</label>
+					<div class="collapsible-content">
+						<div class="content-inner">
+							<div class="content">
+								<p class="labelish">Facial Hair Features:</p>
+							<div id="skincontainter" name="skincontainter">
+					
+							  <div id="fulltype">
+								<label class="container">5 o'clock shadow 
+								  <input type="checkbox" name="5_o_clock_shadow" id="5_o_clock_shadow">
+								  <span class="checkmark"></span>
+								</label>
+							  </div>
+							  <div id="fulltype">
+								<label class="container">Goatee
+								  <input type="checkbox" name="goatee" id="goatee">
+								  <span class="checkmark"></span>
+								</label>
+							  </div>
+							  <div id="fulltype">
+								<label class="container">Mustache
+								  <input type="checkbox" name="mustache" id="mustache">
+								  <span class="checkmark"></span>
+								</label>
+							  </div>
+							  <div id="fulltype">
+								<label class="container">SideBurns
+								  <input type="checkbox" name="sideburns" id="sideburns">
+								  <span class="checkmark"></span>
+								</label>
+							  </div>
+							  <div id="fulltype">
+								<label class="container">No Beard
+								  <input type="checkbox" name="no_beard" id="no_beard">
+								  <span class="checkmark"></span>
+								</label>
+							  </div>
+							</div>
+								 </div>
+						</div>
+					</div>
+				</div>	<!-- one tab end -->
+			</div> 
+
+		<div style="overflow:auto;">
+			<div style="float:right;">
+			  <button type="button" class="next_prev" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+			  <button type="button"class="next_prev"   id="nextBtn" onclick="nextPrev(1)">Next   </button>
+			</div>
+		  </div>
+
+		  <div style="text-align:center;margin-top:40px;">
+			<span class="step"></span>
+			<span class="step"></span>
+		  </div>
+	</form>  
+	</div>
+
+	<!-- Main Criteria Ends here -->
+
+
+<!-- image preview Division -->
+	<div id="image_screen" class= "workframe">
+		<img src="male.png" id="preview_img" class="prv_img">
+		<br>
+		<span id="prv_img_get_id"><a href="" target="_new" onclick=getapi() id="id_href" >Get Identity</a></span>
+	</div>
+	<script src="my_script.js"></script>          
+</body>
+</html>
