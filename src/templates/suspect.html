@@ -10,37 +10,38 @@
 <body>
     <section class="text-gray-600 body-font">
         <div class="container mx-auto flex flex-col px-5 py-24 justify-center items-center">
-          <img class="lg:w-2/6 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded" alt="hero" src="{{ image }}">
+          <img class="lg:w-2/6 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded" alt="Image Here" src="{{ url_for('static', filename=image) }}">
+          <!-- <img class="lg:w-2/6 md:w-3/6 w-5/6 mb-10 object-cover object-center rounded" alt="Image Here" src="P:\GAN Learning\Face_Generation\src\GeneratedImages\test2.png"> -->
           <div class="w-full md:w-2/3 flex flex-col mb-16 items-center text-center">
-            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">Suspect Personal Information</h1>
+            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">{{ name }}</h1>
           
         <div class="lg:w-1/2 md:w-2/3 mx-auto">
           <div class="flex flex-wrap -m-2">
             <div class="p-2 w-1/2">
               <div class="relative">
-                <label for="name" class="leading-7 text-sm text-gray-600">Name</label>
-                <input type="text" id="name" name="{{ name }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readonly>
+                <label for="name" class="leading-7 text-sm text-gray-600">Date of Birth</label>
+                <input type="text" id="dob" value="{{ dob }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readonly>
               </div>
             </div>
             
             <div class="p-2 w-1/2">
               <div class="relative">
-                <label for="name" class="leading-7 text-sm text-gray-600">Date of Birth</label>
-                <input type="text" id="dob" name="{{ dob }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readonly>
+                <label for="name" class="leading-7 text-sm text-gray-600">Marital Status</label>
+                <input type="text" id="married" value="{{ married }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readonly>
               </div>
             </div>
 
             <div class="p-2 w-1/2">
               <div class="relative">
                 <label for="name" class="leading-7 text-sm text-gray-600">Country</label>
-                <input type="text" id="country" name="{{ county }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readonly>
+                <input type="text" id="country" value="{{ county }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readonly>
               </div>
             </div>
 
             <div class="p-2 w-1/2">
               <div class="relative">
                 <label for="name" class="leading-7 text-sm text-gray-600">State</label>
-                <input type="text" id="state" name="{{ state }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readonly>
+                <input type="text" id="state" value="{{ state }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readonly>
               </div>
             </div>
 
@@ -48,14 +49,7 @@
             <div class="p-2 w-full">
               <div class="relative">
                 <label for="message" class="leading-7 text-sm text-gray-600">Address</label>
-                <textarea id="address" name="{{ address }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" readonly></textarea>
-              </div>
-            </div>
-
-            <div class="p-2 w-1/2">
-              <div class="relative">
-                <label for="name" class="leading-7 text-sm text-gray-600">Marital Status</label>
-                <input type="text" id="married" name="{{ married }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" readonly>
+                <textarea id="address" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out" readonly>{{ address }}</textarea>
               </div>
             </div>
             

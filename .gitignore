@@ -5,3 +5,4 @@ datasets
 **/.ipynb_checkpoints
 **/test*
 **/GeneratedImages
+src/static

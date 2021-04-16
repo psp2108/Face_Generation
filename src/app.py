@@ -7,6 +7,8 @@ from datetime import datetime
 from flask import jsonify
 import os
 import subprocess
+import shutil
+import random
 
 app = Flask(__name__) 
 gen = GeneratorModule()
@@ -17,6 +19,11 @@ if not gpuAvailable:
 
 attrib_d = {}
 attributesList = gen.getAttributesOrder()
+
+try:
+    os.makedirs("static")
+except:
+    pass
 
 for i in attributesList:
     attrib_d[i.lower()] = None
@@ -53,6 +60,8 @@ def refresh_dataset():
 @app.route('/get_latest_details')
 def get_image_details():
     outputImagePath = gen.getOutputImagePath()
+    faceName = random.randint(10000,99999)
+    shutil.copy(outputImagePath, f"static/{faceName}.png")
     print("===>>", outputImagePath)
 
     faceDetails = None
@@ -71,7 +80,26 @@ def get_image_details():
 
     print("===>>", faceDetails)
 
-    return jsonify(faceDetails)
+    if "Error" in faceDetails:
+        return render_template("suspect.html", 
+        image=f"{faceName}.png",
+        name="No Match Found", 
+        dob="-", 
+        married="-", 
+        county="-", 
+        state="-", 
+        address="-"
+        ) 
+    else:
+        return render_template("suspect.html", 
+        image=f"{faceName}.png",
+        name=f"{faceDetails['First Name']} {faceDetails['Middle Name']} {faceDetails['Last Name']}", 
+        dob=faceDetails['DOB'], 
+        married=faceDetails['Married'], 
+        county=faceDetails['Country'], 
+        state=faceDetails['State'], 
+        address=f"{faceDetails['Address']}\nContact: {faceDetails['Contact Number']}") 
+
 
 if __name__ == '__main__':
     app.run(debug=False,port=80)
