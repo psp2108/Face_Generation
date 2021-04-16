@@ -176,8 +176,8 @@ for step in tqdm(range(iterationsFrom, iterations)):
         print(log)
 
         # Comment below 2 lines in case same image should be saved as a sample
-        # sampleRealImages, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2, picsPath)
-        # sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
+        sampleRealImages, sampleImagesAttributes = getMetaData(numpyData, sampleStart, controlSizeOfSampleImages**2, picsPath)
+        sampleRandomNoise = np.random.normal(size=(controlSizeOfSampleImages**2, randomNoiseLength))
         sampleStart = sampleStart + (controlSizeOfSampleImages**2)
         if sampleStart > stepLimit:
             sampleStart = 0
