@@ -19,6 +19,7 @@
     },
     "ModelDetails" : {
         "ModelLog" : "Model Log.csv",
+        "PerformanceLog" : "Performance Log.csv",
         "TrainedModel" : "Trained models 1",
         "SampleOutputs" : "Sample Outputs",
         "ModelDiagrams" : "Model diagrams",

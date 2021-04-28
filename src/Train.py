@@ -3,6 +3,10 @@ import tensorflow as tf
 from tensorflow import keras
 from PIL import Image
 import numpy as np
+from numpy import cov
+from numpy import trace
+from numpy import iscomplexobj
+from scipy.linalg import sqrtm
 from gan import getGanModel
 import cv2
 import pandas as pd
@@ -40,6 +44,56 @@ def getMetaData(rawData, start, batchSize, rootPath = ''):
         return (images, attributes)
     return (picNames, attributes)
 
+def getFIDScore(realImages, fakeImages):
+    # Frechet Inception Distance
+        # Frechet Inception Distance
+    length = len(realImages)
+    
+    average = 0
+    
+    for i in range(length):
+        a = cv2.cvtColor(realImages[i], cv2.COLOR_BGR2GRAY)
+        b = cv2.cvtColor(fakeImages[i], cv2.COLOR_BGR2GRAY)
+        
+        # calculate mean and covariance statistics
+        mu1, sigma1 = a.mean(axis=0), cov(a, rowvar=False)
+        mu2, sigma2 = b.mean(axis=0), cov(b, rowvar=False)
+        # calculate sum squared difference between means
+        ssdiff = np.sum((mu1 - mu2)**2.0)
+        # calculate sqrt of product between cov
+        covmean = sqrtm(sigma1.dot(sigma2))
+        # check and correct imaginary numbers from sqrt
+        if iscomplexobj(covmean):
+            covmean = covmean.real
+        # calculate score
+        average = ssdiff + trace(sigma1 + sigma2 - 2.0 * covmean)
+    
+    return average / length
+    
+def getHEDScore(realImages, fakeImages):
+    # Histogram Euclidean Distance
+    length = len(realImages)
+    
+    average = 0
+    
+    for i in range(length):
+        a = cv2.cvtColor(realImages[i], cv2.COLOR_BGR2GRAY)
+        b = cv2.cvtColor(fakeImages[i], cv2.COLOR_BGR2GRAY)
+        
+        ah = cv2.calcHist([a],[0],None,[256],[0,256])
+        bh = cv2.calcHist([b],[0],None,[256],[0,256])
+        
+        lengthh = min(len(ah), len(bh))
+        
+        count = 0
+        j = 0
+        while j<lengthh:
+            count+=(ah[j][0]-bh[j][0])**2
+            j+= 1
+        average += count**(1 / 2)
+    
+    return average / length
+
 def copyCode(rootFolder):
     codeFiles = [
         "Discriminator.py",
@@ -64,6 +118,7 @@ picsPath = os.path.join(dataset['ImageRootPath'], dataset['ImageProcessedImages'
 csvPath = os.path.join(CSVDetails['CSVRootPath'], CSVDetails['CombinedCSV']).replace("/", "\\")
 modelRootFolder = modelDetails['ModelRootFolder'].replace("/", "\\")
 modelLog = os.path.join(modelRootFolder, modelDetails['ModelLog'])
+PerformanceLog = os.path.join(modelRootFolder, modelDetails['PerformanceLog'])
 modelCopy = os.path.join(modelRootFolder, modelDetails['TrainedModel'])
 sampleOutput = os.path.join(modelRootFolder, modelDetails['SampleOutputs'])
 codeCopy = os.path.join(modelRootFolder, modelDetails['CodeCopy'])
@@ -78,7 +133,10 @@ start = 0
 iterationsFrom = 0
 iterations = 50000
 loop = 0
-stepLimit = (len(numpyData) * 0.75) - batchSize
+
+validationDataStart = len(numpyData) * 0.75
+stepLimit = validationDataStart - batchSize
+
 # stepLimit = 10000
 
 saveModelInterval = 50
@@ -90,7 +148,7 @@ controlSizeOfSampleImages = 6
 gan, generator, discriminator = getGanModel()
 
 if os.path.isdir(modelCopy):
-    gan.load_weights(os.path.join(modelCopy, 'gan_latest.h5'))
+    # gan.load_weights(os.path.join(modelCopy, 'gan_latest.h5'))
     generator.load_weights(os.path.join(modelCopy, 'generator_latest.h5'))
     discriminator.load_weights(os.path.join(modelCopy, 'discriminator_latest.h5'))
 
@@ -111,6 +169,10 @@ else:
     modelLogFile = open(modelLog, "w")
     modelLogFile.writelines("Iterations, Discriminator Loss, Adversary Loss, Image number, Loop\n")
     modelLogFile.close()
+
+    pergormanceLogFile = open(PerformanceLog, "w")
+    pergormanceLogFile.writelines("Iterations, HED Train, FID Train, HED Test, FED Test\n")
+    pergormanceLogFile.close()
 
     copyCode(codeCopy)
 
@@ -159,18 +221,42 @@ for step in tqdm(range(iterationsFrom, iterations)):
     adversaryLoss = gan.train_on_batch([randomVector, attributes], misleadingTargets)
         
     if step % saveModelInterval == saveModelInterval - 1:
-        gan.save_weights(os.path.join(modelCopy, 'gan_'+ str(step + 1) +'.h5'))
+        # gan.save_weights(os.path.join(modelCopy, 'gan_'+ str(step + 1) +'.h5'))
         generator.save_weights(os.path.join(modelCopy, 'generator_'+ str(step + 1) +'.h5'))
         discriminator.save_weights(os.path.join(modelCopy, 'discriminator_'+ str(step + 1) +'.h5'))
 
         # Preserve latest copy for easy access
-        gan.save_weights(os.path.join(modelCopy, 'gan_latest.h5'))
+        # gan.save_weights(os.path.join(modelCopy, 'gan_latest.h5'))
         generator.save_weights(os.path.join(modelCopy, 'generator_latest.h5'))
         discriminator.save_weights(os.path.join(modelCopy, 'discriminator_latest.h5'))
 
         modelLogFile = open(modelLog, "a")
         modelLogFile.writelines("%d, %f, %f, %d, %d\n" % (step + 1, discriminatorLoss, adversaryLoss, start, loop))
         modelLogFile.close()
+
+        tempSampleRealImages, tempSampleImagesAttributes = getMetaData(numpyData, 0, 50, picsPath)
+        tempSampleRandomNoise = np.random.normal(size=(50, randomNoiseLength))
+        tempSampleGeneratedImages = generator.predict([tempSampleImagesAttributes, tempSampleRandomNoise])
+
+        tempSampleRealImages = np.uint8(tempSampleRealImages * 255)
+        tempSampleRealImages = np.uint8(tempSampleGeneratedImages * 255)
+
+        fidTrain = getFIDScore(tempSampleRealImages, tempSampleGeneratedImages)
+        hedTrain = getHEDScore(tempSampleRealImages, tempSampleGeneratedImages)
+        
+        tempSampleRealImages, tempSampleImagesAttributes = getMetaData(numpyData, int(validationDataStart), 50, picsPath)
+        tempSampleRandomNoise = np.random.normal(size=(50, randomNoiseLength))
+        tempSampleGeneratedImages = generator.predict([tempSampleImagesAttributes, tempSampleRandomNoise])
+
+        tempSampleRealImages = np.uint8(tempSampleRealImages * 255)
+        tempSampleRealImages = np.uint8(tempSampleGeneratedImages * 255)
+        
+        fidTest = getFIDScore(tempSampleRealImages, tempSampleGeneratedImages)
+        hedTest = getHEDScore(tempSampleRealImages, tempSampleGeneratedImages)
+
+        pergormanceLogFile = open(PerformanceLog, "a")
+        pergormanceLogFile.writelines("%d, %f, %f, %f, %f\n" % (step + 1, hedTrain, fidTrain, hedTest, fidTest))
+        pergormanceLogFile.close()
 
     if step % showImageInterval == showImageInterval - 1:
         log = 'Iterations: %d/%d, d_loss: %.4f,  a_loss: %.4f. ' % (step + 1, iterations, discriminatorLoss, adversaryLoss)

@@ -108,7 +108,7 @@ def get_image_details():
 
 
 if __name__ == '__main__':
-    app.run(debug=False,port=80)
+    app.run(debug=False,port=5000)
 
 # http://127.0.0.1/get_image?5_o_clock_shadow=0&bags_under_eyes=0&big_lips=0&big_nose=0&chubby=0&double_chin=0&goatee=0&heavy_makeup=0.1&high_cheekbones=0.1&male=0&mustache=0&narrow_eyes=0&no_beard=0.1&oval_face=0.1&pale_skin=0&pointy_nose=0.1&rosy_cheeks=0&sideburns=0.1&smiling=0.1&straight_hair=0.1&wavy_hair=0&young=0.1&hair_color=0.075&hair_size=0.1&combine_eyebrow=0&rv0=17.917&rv1=18.143&rv2=8.966&rv3=29.206&rv4=13.653&rv5=13.822&rv6=20.095
 # http://127.0.0.1/get_image?5_o_clock_shadow=0&bags_under_eyes=0&big_lips=0&big_nose=0&chubby=0&double_chin=0&goatee=0&heavy_makeup=1&high_cheekbones=1&male=0&mustache=0&narrow_eyes=0&no_beard=1&oval_face=1&pale_skin=0&pointy_nose=1&rosy_cheeks=0&sideburns=1&smiling=1&straight_hair=1&wavy_hair=0&young=1&hair_color=0.75&hair_size=1&combine_eyebrow=0&rv0=-1.5520749999999999&rv1=-1.546425&rv2=-1.77585&rv3=-1.26985&rv4=-1.6586750000000001&rv5=-1.65445&rv6=-1.497625
