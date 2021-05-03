@@ -1,11 +1,11 @@
 {
     "ImageDetails" : {
-        "ImageRootPath" : "../datasets/29561_37705_bundle_archive/img_align_celeba",
+        "ImageRootPath" : "training datasets/29561_37705_bundle_archive/img_align_celeba",
         "ImageImages" : "img_align_celeba",
         "ImageProcessedImages" : "processed"
     },
     "CSVDetails" : {
-        "CSVRootPath" : "../datasets/29561_37705_bundle_archive",
+        "CSVRootPath" : "training datasets/29561_37705_bundle_archive",
         "NormalizeData" : {
             "AttributesFile" : {
                 "From" : "list_attr_celeba.csv",
@@ -19,10 +19,10 @@
     },
     "ModelDetails" : {
         "ModelLog" : "Model Log.csv",
-        "TrainedModel" : "Trained models 1",
+        "TrainedModel" : "Trained models",
         "SampleOutputs" : "Sample Outputs",
         "ModelDiagrams" : "Model diagrams",
-        "ModelRootFolder" : "test_0704_001",
+        "ModelRootFolder" : "Model",
         "CodeCopy": "Code-Copy",
         "RandomVectorSize" : 7,
         "TotalAttributes" : 25,
